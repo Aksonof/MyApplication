@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Мій Застосунок</string>
+
+    <string name="VIEW_MY_CONTACTS">ПЕРЕГЛЯНУТИ МОЇ КОНТАКТИ</string>
+
+    <string name="Edit_profile">Редагувати профіль</string>
+
+    <string name="Go_to">Перейти в налаштування та заповнити профіль</string>
+
+    <string name="Home_address">Домашня адреса</string>
+
+    <string name="Career">Посада</string>
+
+    <string name="Name">Гаррі Ерл</string>
+
+    <string name="Settings">Налаштування</string>
+
+    <string name="Log_out">Вийти</string>
+
+    <string name="Lets_get">Давайте познайомимось</string>
+
+    <string name="Fill_out">Вказуйте дані та переходьте у застосунок!</string>
+
+    <string name="Email">Е-пошта</string>
+
+    <string name="Pass">Пароль</string>
+
+    <string name="Remember_me">Запам\'ятай мене</string>
+
+    <string name="Google">GOOGLE</string>
+
+    <string name="or">або</string>
+
+    <string name="Register">Зареєструватися</string>
+
+    <string name="Term">Натиснувши «Зареєструватися», ви погоджуєтеся з нашими
+        Умовами користування</string>
+
+</resources>
