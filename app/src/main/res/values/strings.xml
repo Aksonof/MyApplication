@@ -33,7 +33,10 @@
 
     <string name="Register">REGISTER</string>
 
-    <string name="Term">By clicking Register you agree to our Terms
-        and Conditions</string>
+    <string name="Term">By clicking Register you agree to our\n Terms and Conditions</string>
+
+    <string name="Already_have">Already have an account?</string>
+
+    <string name="Sign_in">Sign in</string>
 
 </resources>
