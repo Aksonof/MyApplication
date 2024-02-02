@@ -8,6 +8,10 @@
     <color name="gray_text">#18181F</color>
     <color name="orange">#FB5E06</color>
 
+    <color name="my_light_text_primary">#FFFFFFFF</color>
+    <color name="my_light_text_secondary">#BDBDBD</color>
+
+
     <color name="my_dark_primary">#008080</color>
     <color name="my_dark_background">#2F4F4F</color>
 
