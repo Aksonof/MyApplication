@@ -33,8 +33,8 @@ class AuthActivity : AppCompatActivity() {
 
     private fun autoLog() {
         sharedPref = getSharedPreferences("autoLog", MODE_PRIVATE)
-        binding.emailEditText?.setText(sharedPref.getString("email", ""))
-        binding.passEditText?.setText(sharedPref.getString("pass", ""))
+        binding.emailEditText.setText(sharedPref.getString("email", ""))
+        binding.passEditText.setText(sharedPref.getString("pass", ""))
 
         if (intent.extras?.getBoolean("logOut") == true) {
             val editor = sharedPref.edit()
@@ -42,7 +42,7 @@ class AuthActivity : AppCompatActivity() {
             editor.apply()
         }
 
-        if (binding.emailEditText?.text?.isNotBlank() == true &&
+        if (binding.emailEditText.text?.isNotBlank() == true &&
             intent.extras?.getBoolean("logOut") != true
         ) {
             val intent = Intent(this, MainActivity::class.java)
@@ -55,12 +55,12 @@ class AuthActivity : AppCompatActivity() {
     * This code validates the entered password when the field loses focus.
     * */
     private fun passFocusListener() {
-        binding.passEditText?.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+        binding.passEditText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
-                if (!isValidPass(binding.passEditText?.text.toString())) {
-                    binding.passInputLayout?.error = getString(R.string.passMSG)
+                if (!isValidPass(binding.passEditText.text.toString())) {
+                    binding.passInputLayout.error = getString(R.string.passMSG)
                 } else {
-                    binding.passInputLayout?.error = null
+                    binding.passInputLayout.error = null
                 }
             }
         }
@@ -71,12 +71,12 @@ class AuthActivity : AppCompatActivity() {
     * If the action is neither "Done" nor "Enter," the function returns fal
     * */
     private fun passKeyListener() {
-        binding.passEditText?.setOnEditorActionListener { _, actionId, event ->
+        binding.passEditText.setOnEditorActionListener { _, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE || (event.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_ENTER)) {
-                if (!isValidPass(binding.passEditText?.text.toString())) {
-                    binding.passInputLayout?.error = getString(R.string.passMSG)
+                if (!isValidPass(binding.passEditText.text.toString())) {
+                    binding.passInputLayout.error = getString(R.string.passMSG)
                 } else {
-                    binding.passInputLayout?.error = null
+                    binding.passInputLayout.error = null
                 }
                 true
             } else {
@@ -91,10 +91,10 @@ class AuthActivity : AppCompatActivity() {
      * If not, it sets an error message.
      * */
     private fun emailFocusListener() {
-        binding.emailEditText?.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+        binding.emailEditText.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
-                if (!isValidEmail(binding.emailEditText?.text.toString())) {
-                    binding.emailEditText?.error = getString(R.string.emailMSG)
+                if (!isValidEmail(binding.emailEditText.text.toString())) {
+                    binding.emailEditText.error = getString(R.string.emailMSG)
                 }
             }
         }
@@ -106,10 +106,10 @@ class AuthActivity : AppCompatActivity() {
     * If the action is not "Done" or "Enter," it returns false.
     * */
     private fun emailKeyListener() {
-        binding.emailEditText?.setOnKeyListener { _, actionId, event ->
+        binding.emailEditText.setOnKeyListener { _, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE || (event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)) {
-                if (!isValidEmail(binding.emailEditText?.text.toString())) {
-                    binding.emailEditText?.error = getString(R.string.emailMSG)
+                if (!isValidEmail(binding.emailEditText.text.toString())) {
+                    binding.emailEditText.error = getString(R.string.emailMSG)
                 }
                 true
             } else {
@@ -125,14 +125,14 @@ class AuthActivity : AppCompatActivity() {
     * it displays an error toast.
     * */
     private fun registerClickListener() {
-        binding.registerButton?.setOnClickListener {
+        binding.registerButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
-            val email = binding.emailEditText?.text.toString()
-            val pass = binding.passEditText?.text.toString()
+            val email = binding.emailEditText.text.toString()
+            val pass = binding.passEditText.text.toString()
             val editor = sharedPref.edit()
 
             if (isValidEmail(email) && isValidPass(pass)) {
-                if (binding.rememberMeCheckBox!!.isChecked) {
+                if (binding.rememberMeCheckBox.isChecked) {
                     editor.putString("email", email)
                     editor.putString("pass", pass)
                     editor.apply()
@@ -168,6 +168,4 @@ class AuthActivity : AppCompatActivity() {
     private fun isValidEmail(email: String): Boolean {
         return (!TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches())
     }
-
-
 }
