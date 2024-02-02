@@ -8,7 +8,6 @@
         <item name="android:textColorPrimary">@color/my_dark_text_primary</item>
         <item name="android:textColorSecondary">@color/my_dark_text_secondary</item>
         <item name="android:buttonStyle">@style/MyDarkButtonStyle</item>
-
         <item name="android:buttonStyleSmall">@style/MyDarkButtonStyleSmall</item>
     </style>
 
@@ -21,7 +20,7 @@
 
 
     <style name="MyDarkButtonStyleSmall" parent="Widget.AppCompat.Button">
-        <item name="android:background">drawable/register_dark_button_background</item>
+        <item name="android:background">@drawable/register_dark_button_background</item>
     </style>
 
 </resources>
