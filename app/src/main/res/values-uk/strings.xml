@@ -43,8 +43,6 @@
     <string name="emailMSG">Невірний формат пошти.</string>
     <string name="finalValidationMSG">Невірна адреса електронної пошти або пароль.</string>
 
-    <string name="Already_have">Вже маєш профіль?</string>
 
-    <string name="Sign_in">Увійти</string>
 
 </resources>
