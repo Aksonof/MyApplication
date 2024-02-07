@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.50059456" />
+        app:layout_constraintGuide_end="365dp" />
 
     <!-- Blue top -->
     <View
@@ -22,7 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/blue"
-
         app:layout_constraintBottom_toTopOf="@id/guideline"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -83,7 +82,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:layout_width="98dp"
+        android:layout_width="wrap_content"
         android:layout_height="18dp"
         android:layout_marginVertical="305dp"
         android:layout_marginLeft="131dp"
@@ -100,21 +99,21 @@
 
 
     <TextView
-        android:layout_width="46dp"
+        android:layout_width="wrap_content"
         android:layout_height="18dp"
         android:layout_marginVertical="271dp"
         android:layout_marginLeft="157dp"
         android:layout_marginRight="157dp"
         android:gravity="center"
         android:text="@string/Career"
-        android:textColor="@color/gray"
+        android:textColor="?android:textColorSecondary"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/userNameTextView"
         android:layout_width="wrap_content"
         android:layout_height="23dp"
         android:layout_marginVertical="240dp"
@@ -122,7 +121,7 @@
         android:layout_marginRight="114dp"
         android:gravity="center"
         android:text="@string/Name"
-        android:textColor="@color/white"
+        android:textColor="?android:textColorPrimary"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -140,7 +139,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:layout_width="93dp"
+            android:layout_width="wrap_content"
             android:layout_height="31dp"
             android:layout_gravity="start|center_vertical"
             android:background="@android:color/transparent"
@@ -150,6 +149,7 @@
             android:textSize="24sp" />
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/logOutViewButton"
             android:layout_width="119dp"
             android:layout_height="40dp"
             android:layout_gravity="end|bottom"

@@ -33,7 +33,14 @@
 
     <string name="Register">Зареєструватися</string>
 
-    <string name="Term">Натиснувши «Зареєструватися», ви погоджуєтеся з нашими
-        Умовами користування</string>
+    <string name="Term">Натиснувши «Зареєструватися», ви погоджуєтеся з нашими Умовами користування</string>
+
+    <string name="Already_have">Вже маєш профіль?</string>
+
+    <string name="Sign_in">Увійти</string>
+
+    <string name="passMSG">Пароль: 6+ символів, Aa–Zz, 0–9</string>
+    <string name="emailMSG">Невірний формат пошти.</string>
+    <string name="finalValidationMSG">Невірна адреса електронної пошти або пароль.</string>
 
 </resources>
