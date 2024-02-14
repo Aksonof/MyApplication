@@ -1,6 +1,7 @@
 package com.example.myapplication.model
 
 import com.github.javafaker.Faker
+import com.google.android.material.snackbar.Snackbar
 
 typealias UsersListener = (users: List<User>) -> Unit
 
@@ -34,6 +35,11 @@ class UsersManager {
             users.removeAt(indexForDelete)
             notifyChanges()
         }
+    }
+
+    fun restoreUser(user: User) {
+        users.add(user.id.toInt() - 1, user)
+        notifyChanges()
     }
 
     fun addListener(listener: UsersListener) {

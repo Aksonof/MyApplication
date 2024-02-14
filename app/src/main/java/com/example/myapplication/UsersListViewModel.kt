@@ -20,11 +20,6 @@ class UsersListViewModel(private val usersManager: UsersManager) : ViewModel() {
         loadUsers()
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        usersManager.removeListener(listener)
-    }
-
     private fun loadUsers() {
         usersManager.addListener(listener)
     }
@@ -33,5 +28,12 @@ class UsersListViewModel(private val usersManager: UsersManager) : ViewModel() {
         usersManager.deleteUser(user)
     }
 
+    fun restoreUser(user: User) {
+        usersManager.restoreUser(user)
+    }
 
+    override fun onCleared() {
+        super.onCleared()
+        usersManager.removeListener(listener)
+    }
 }

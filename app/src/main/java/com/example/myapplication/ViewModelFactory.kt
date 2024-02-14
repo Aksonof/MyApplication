@@ -1,6 +1,5 @@
 package com.example.myapplication
 
-import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
