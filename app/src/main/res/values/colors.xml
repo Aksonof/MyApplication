@@ -9,7 +9,7 @@
     <color name="orange">#FB5E06</color>
     <color name="royal_blue">#4682B4</color>
 
-    <color name="my_light_background">#242235</color>
+    <color name="my_light_background">#FFFFFFFF</color>
     <color name="my_light_primary">#008080</color>
     <color name="my_light_text_primary">#FFFFFFFF</color>
     <color name="my_light_text_secondary">#BDBDBD</color>
@@ -19,4 +19,6 @@
     <color name="my_dark_background">#2F4F4F</color>
     <color name="my_dark_text_primary">#FFEFD5</color>
     <color name="my_dark_text_secondary">#F0E68C</color>
+    <color name="gray_light">#B2B2B3</color>
+    <color name="gray_3">#828282</color>
 </resources>

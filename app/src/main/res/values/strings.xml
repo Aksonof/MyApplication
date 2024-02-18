@@ -42,5 +42,9 @@
     <string name="passMSG">Password: 6+ chars, Aa–Zz, 0–9</string>
     <string name="emailMSG">Use the correct email format.</string>
     <string name="finalValidationMSG">Invalid email or password.</string>
+    <string name="cancel">Cancel</string>
+    <string name="contact_has_been_removed">Contact has been removed</string>
+    <string name="contacts">Contacts</string>
+    <string name="add_contact">Add contact</string>
 
 </resources>

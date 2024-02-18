@@ -3,6 +3,7 @@ package com.example.myapplication
 import android.os.Bundle
 import android.view.View
 import androidx.activity.ComponentActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,11 +33,19 @@ class RecyclerActivity : ComponentActivity() {
         adapter = UsersAdapter(object : UserActionListener {
             override fun onDeleteUser(user: User) {
                 viewModel.deleteUser(user)
-                Snackbar.make(binding.root, "Contact has been removed", 5000)
-                    .setAction("Cancel", View.OnClickListener { viewModel.restoreUser(user) })
+                Snackbar.make(binding.root, getString(R.string.contact_has_been_removed), 5000)
+                    .setAction(
+                        getString(R.string.cancel),
+                        View.OnClickListener { viewModel.restoreUser(user) })
+                    .setActionTextColor(
+                        ContextCompat.getColor(
+                            this@RecyclerActivity,
+                            R.color.my_light_primary
+                        )
+                    )
                     .show()
-
             }
+
             override fun onAddUser(user: User) {
                 TODO("Not yet implemented")
             }
