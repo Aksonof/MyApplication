@@ -13,8 +13,6 @@ import com.example.myapplication.model.User
 interface UserActionListener {
     fun onDeleteUser(user: User)
 
-    fun onAddUser(user: User)
-
 }
 
 
@@ -50,7 +48,6 @@ class UsersAdapter(private val actionListener: UserActionListener) :
         with(holder.binding) {
             holder.itemView.tag = user
             deleteUserView.tag = user
-
             userNameView.text = user.name
             userCareerView.text = user.career
             if (user.photo.isNotBlank()) {

@@ -29,6 +29,11 @@ class UsersManager {
         return users
     }
 
+
+    fun addUser(user: User) {
+        // TODO: add user
+    }
+
     fun deleteUser(user: User) {
         val indexForDelete = users.indexOfFirst { it.id == user.id }
         if (indexForDelete != -1) {

@@ -2,8 +2,9 @@ package com.example.myapplication
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,7 +12,7 @@ import com.example.myapplication.databinding.ActivityRecyclerBinding
 import com.example.myapplication.model.User
 import com.google.android.material.snackbar.Snackbar
 
-class RecyclerActivity : ComponentActivity() {
+class RecyclerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRecyclerBinding
     private lateinit var adapter: UsersAdapter
@@ -45,10 +46,6 @@ class RecyclerActivity : ComponentActivity() {
                     )
                     .show()
             }
-
-            override fun onAddUser(user: User) {
-                TODO("Not yet implemented")
-            }
         })
 
         viewModel.users.observe(this, Observer {
@@ -58,6 +55,24 @@ class RecyclerActivity : ComponentActivity() {
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter
+
+
+        binding.addContactTextView.setOnClickListener {
+            showAddUserDialog()
+        }
+
+    }
+
+
+    private fun showAddUserDialog() {
+
+        val dialogFragment = AddUserDialogFragment(object : AddUserDialogListener {
+            override fun onDataEntered(data: Bundle) {
+                val userName = data.getString("userName")
+                val userCareer = data.getString("userCareer")
+            }
+        })
+        dialogFragment.show(supportFragmentManager, "TAG")
     }
 
 
