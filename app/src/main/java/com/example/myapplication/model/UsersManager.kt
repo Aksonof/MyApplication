@@ -8,13 +8,12 @@ typealias UsersListener = (users: List<User>) -> Unit
 class UsersManager {
 
     private var users = mutableListOf<User>()
-
     private val listeners = mutableSetOf<UsersListener>()
 
     init {
         val faker = Faker.instance()
         IMAGES.shuffle()
-        users = (1..50).map {
+        users = (0..50).map {
             User(
                 name = faker.funnyName().name(),
                 career = faker.job().title(),
@@ -24,14 +23,15 @@ class UsersManager {
         }.toMutableList()
     }
 
-
     fun getUsers(): List<User> {
         return users
     }
 
-
     fun addUser(user: User) {
-        // TODO: add user
+        IMAGES.shuffle()
+        user.photo = IMAGES[0]
+        users.add(user.id.toInt(), user)
+        notifyChanges()
     }
 
     fun deleteUser(user: User) {
@@ -43,7 +43,7 @@ class UsersManager {
     }
 
     fun restoreUser(user: User) {
-        users.add(user.id.toInt() - 1, user)
+        users.add(user.id.toInt(), user)
         notifyChanges()
     }
 

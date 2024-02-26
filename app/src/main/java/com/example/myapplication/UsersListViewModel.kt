@@ -32,6 +32,10 @@ class UsersListViewModel(private val usersManager: UsersManager) : ViewModel() {
         usersManager.restoreUser(user)
     }
 
+    fun addUser(user: User) {
+        usersManager.addUser(user)
+    }
+
     override fun onCleared() {
         super.onCleared()
         usersManager.removeListener(listener)

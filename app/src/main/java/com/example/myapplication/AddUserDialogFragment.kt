@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.app.Dialog
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,7 +30,6 @@ class AddUserDialogFragment(private val listener: AddUserDialogListener) : Dialo
         }
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,9 +39,11 @@ class AddUserDialogFragment(private val listener: AddUserDialogListener) : Dialo
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.userNameEditTextView.setTextColor(Color.BLACK)
+        binding.userCareerEditTextView.setTextColor(Color.BLACK)
+
         binding.saveButtonView.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("userName", binding.userNameEditTextView.text.toString())
@@ -50,7 +52,6 @@ class AddUserDialogFragment(private val listener: AddUserDialogListener) : Dialo
             dismiss()
         }
     }
-
 
     companion object {
         @JvmStatic

@@ -63,17 +63,15 @@ class RecyclerActivity : AppCompatActivity() {
 
     }
 
-
     private fun showAddUserDialog() {
 
         val dialogFragment = AddUserDialogFragment(object : AddUserDialogListener {
             override fun onDataEntered(data: Bundle) {
                 val userName = data.getString("userName")
                 val userCareer = data.getString("userCareer")
+                viewModel.addUser(User(userName!!, userCareer!!, "", 0))
             }
         })
         dialogFragment.show(supportFragmentManager, "TAG")
     }
-
-
 }
