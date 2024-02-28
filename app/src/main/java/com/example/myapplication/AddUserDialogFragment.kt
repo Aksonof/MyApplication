@@ -1,14 +1,10 @@
 package com.example.myapplication
 
-import android.app.Dialog
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.view.WindowManager
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.example.myapplication.databinding.AddUserDialogBinding
 
@@ -19,7 +15,14 @@ interface AddUserDialogListener {
 
 class AddUserDialogFragment(private val listener: AddUserDialogListener) : DialogFragment() {
 
+    // Default constructor required by the system
+    constructor() : this(object : AddUserDialogListener {
+        override fun onDataEntered(data: Bundle) {
+        }
+    })
+
     private lateinit var binding: AddUserDialogBinding
+
 
     override fun onStart() {
         super.onStart()
@@ -36,14 +39,6 @@ class AddUserDialogFragment(private val listener: AddUserDialogListener) : Dialo
         savedInstanceState: Bundle?
     ): View {
         binding = AddUserDialogBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.userNameEditTextView.setTextColor(Color.BLACK)
-        binding.userCareerEditTextView.setTextColor(Color.BLACK)
-
         binding.saveButtonView.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("userName", binding.userNameEditTextView.text.toString())
@@ -51,11 +46,13 @@ class AddUserDialogFragment(private val listener: AddUserDialogListener) : Dialo
             listener.onDataEntered(bundle)
             dismiss()
         }
+        return binding.root
     }
+
 
     companion object {
         @JvmStatic
-        private val TAG = AddUserDialogFragment::class.java.simpleName
+        val TAG: String = AddUserDialogFragment::class.java.simpleName
     }
 }
 

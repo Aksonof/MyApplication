@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -56,11 +55,9 @@ class RecyclerActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter
 
-
         binding.addContactTextView.setOnClickListener {
             showAddUserDialog()
         }
-
     }
 
     private fun showAddUserDialog() {
@@ -72,6 +69,6 @@ class RecyclerActivity : AppCompatActivity() {
                 viewModel.addUser(User(userName!!, userCareer!!, "", 0))
             }
         })
-        dialogFragment.show(supportFragmentManager, "TAG")
+        dialogFragment.show(supportFragmentManager, AddUserDialogFragment.TAG)
     }
 }

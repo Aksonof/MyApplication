@@ -3,9 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/toolBarView"
@@ -81,171 +79,105 @@
         tools:ignore="HardcodedText" />
 
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/userNameLayout"
-        android:layout_width="0dp"
-        android:layout_height="57dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        app:boxBackgroundMode="none"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolBarView" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="36dp"
+        app:layout_constraintBottom_toTopOf="@id/saveButtonView"
+        app:layout_constraintTop_toBottomOf="@id/toolBarView">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/userNameEditTextView"
-        android:layout_width="0dp"
-        android:layout_height="57dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:hint="@string/username"
-        android:singleLine="true"
-        android:textColor="@color/white"
-        android:textColorHint="@color/gray_dark"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolBarView" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:paddingBottom="25dp">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/userCareerLayout"
-        android:layout_width="0dp"
-        android:layout_height="57dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        app:boxBackgroundMode="none"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userNameLayout" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/userNameEditTextView"
+                android:layout_width="0dp"
+                android:layout_height="57dp"
+                android:hint="@string/username"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray_dark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/userCareerEditTextView"
-        android:layout_width="0dp"
-        android:layout_height="57dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:hint="@string/Career"
-        android:singleLine="true"
-        android:textColor="@color/white"
-        android:textColorHint="@color/gray_dark"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userNameLayout" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/userEmailLayout"
-        android:layout_width="0dp"
-        android:layout_height="57dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        app:boxBackgroundMode="none"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userCareerLayout" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/userEmailEditTextView"
-        android:layout_width="0dp"
-        android:layout_height="57dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:hint="@string/Email"
-        android:singleLine="true"
-        android:textColor="@color/white"
-        android:textColorHint="@color/gray_dark"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userCareerLayout" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/userCareerEditTextView"
+                android:layout_width="0dp"
+                android:layout_height="57dp"
+                android:layout_marginTop="24dp"
+                android:hint="@string/Career"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray_dark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/userNameEditTextView" />
 
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/userPhoneLayout"
-        android:layout_width="0dp"
-        android:layout_height="57dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        app:boxBackgroundMode="none"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userEmailLayout" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/userPhoneEditTextView"
-        android:layout_width="0dp"
-        android:layout_height="57dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:hint="@string/phone"
-        android:singleLine="true"
-        android:textColor="@color/white"
-        android:textColorHint="@color/gray_dark"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userEmailLayout" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/userEmailEditTextView"
+                android:layout_width="0dp"
+                android:layout_height="57dp"
+                android:layout_marginTop="24dp"
+                android:hint="@string/Email"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray_dark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/userCareerEditTextView" />
 
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/userAddressLayout"
-        android:layout_width="0dp"
-        android:layout_height="57dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        app:boxBackgroundMode="none"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userPhoneLayout" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/userPhoneEditTextView"
+                android:layout_width="0dp"
+                android:layout_height="57dp"
+                android:layout_marginTop="24dp"
+                android:hint="@string/phone"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray_dark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/userEmailEditTextView" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/userAddressEditTextView"
-        android:layout_width="0dp"
-        android:layout_height="57dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:hint="@string/Home_address"
-        android:singleLine="true"
-        android:textColor="@color/white"
-        android:textColorHint="@color/gray_dark"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userPhoneLayout" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/userBirthLayout"
-        android:layout_width="0dp"
-        android:layout_height="57dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        app:boxBackgroundMode="none"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userAddressLayout" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/userAddressEditTextView"
+                android:layout_width="0dp"
+                android:layout_height="57dp"
+                android:layout_marginTop="24dp"
+                android:hint="@string/Home_address"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray_dark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/userPhoneEditTextView" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/userBirthEditTextView"
-        android:layout_width="0dp"
-        android:layout_height="57dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:hint="@string/date_of_birth"
-        android:singleLine="true"
-        android:textColor="@color/white"
-        android:textColorHint="@color/gray_dark"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userAddressLayout"
-       />
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/userBirthEditTextView"
+                android:layout_width="0dp"
+                android:layout_height="57dp"
+                android:layout_marginTop="24dp"
+                android:hint="@string/date_of_birth"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray_dark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/userAddressEditTextView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -9,7 +9,7 @@
         android:id="@+id/toolBarView"
         android:layout_width="match_parent"
         android:layout_height="117dp"
-        android:background="#242235"
+        android:background="@color/blue_deep"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
@@ -67,6 +67,7 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolBarView" />
 
 
