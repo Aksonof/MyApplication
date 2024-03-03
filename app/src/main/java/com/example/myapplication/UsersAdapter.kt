@@ -15,14 +15,12 @@ interface UserActionListener {
 
 }
 
-
 class UsersAdapter(private val actionListener: UserActionListener) :
     RecyclerView.Adapter<UsersAdapter.UsersViewHolder>(), View.OnClickListener {
 
     class UsersViewHolder(val binding: UserPatternBinding) : RecyclerView.ViewHolder(binding.root)
 
     var users: List<User> = emptyList()
-        @SuppressLint("NotifyDataSetChanged")
         set(value) {
             field = value
             notifyDataSetChanged()
