@@ -9,11 +9,11 @@ import com.example.myapplication.model.UsersManager
 class UsersListViewModel(private val usersManager: UsersManager) : ViewModel() {
 
 
-    private val _users = MutableLiveData<List<User>>()
-    val users = _users
+    private val _usersLiveData = MutableLiveData<List<User>>()
+    val usersLiveData = _usersLiveData
 
     private val listener: UsersListener = {
-        _users.value = it
+        _usersLiveData.value = it
     }
 
     init {

@@ -1,9 +1,10 @@
 package com.example.myapplication
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myapplication.databinding.UserPatternBinding
@@ -16,19 +17,27 @@ interface UserActionListener {
 }
 
 class UsersAdapter(private val actionListener: UserActionListener) :
-    RecyclerView.Adapter<UsersAdapter.UsersViewHolder>(), View.OnClickListener {
+    ListAdapter<User, UsersAdapter.UsersViewHolder>(MyItemCallback()), View.OnClickListener {
+
 
     class UsersViewHolder(val binding: UserPatternBinding) : RecyclerView.ViewHolder(binding.root)
 
-    var users: List<User> = emptyList()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
 
     override fun onClick(v: View) {
         val user = v.tag as User
         actionListener.onDeleteUser(user)
+    }
+
+
+
+    class MyItemCallback : DiffUtil.ItemCallback<User>() {
+        override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
+            return oldItem == newItem
+        }
     }
 
 
@@ -39,10 +48,8 @@ class UsersAdapter(private val actionListener: UserActionListener) :
         return UsersViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = users.size
-
     override fun onBindViewHolder(holder: UsersViewHolder, position: Int) {
-        val user = users[position]
+        val user = getItem(position)
         with(holder.binding) {
             holder.itemView.tag = user
             deleteUserView.tag = user
@@ -62,3 +69,7 @@ class UsersAdapter(private val actionListener: UserActionListener) :
         }
     }
 }
+
+
+
+

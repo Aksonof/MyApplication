@@ -38,6 +38,7 @@ class UsersManager {
         val indexForDelete = users.indexOfFirst { it.id == user.id }
         if (indexForDelete != -1) {
             users.removeAt(indexForDelete)
+            println(indexForDelete)
             notifyChanges()
         }
     }

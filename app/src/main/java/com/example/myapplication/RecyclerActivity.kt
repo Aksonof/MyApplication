@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.ActivityRecyclerBinding
@@ -33,6 +32,7 @@ class RecyclerActivity : AppCompatActivity() {
         adapter = UsersAdapter(object : UserActionListener {
             override fun onDeleteUser(user: User) {
                 viewModel.deleteUser(user)
+
                 Snackbar.make(binding.root, getString(R.string.contact_has_been_removed), 5000)
                     .setAction(
                         getString(R.string.cancel),
@@ -46,14 +46,14 @@ class RecyclerActivity : AppCompatActivity() {
                     .show()
             }
         })
-
-        viewModel.users.observe(this, Observer {
-            adapter.users = it
-        })
-
+        viewModel.usersLiveData.observe(this) {
+            adapter.submitList(it)
+        }
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter
+
+
 
         binding.addContactTextView.setOnClickListener {
             showAddUserDialog()
