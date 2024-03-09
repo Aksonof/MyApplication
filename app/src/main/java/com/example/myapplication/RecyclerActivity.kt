@@ -1,7 +1,6 @@
 package com.example.myapplication
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -35,8 +34,8 @@ class RecyclerActivity : AppCompatActivity() {
 
                 Snackbar.make(binding.root, getString(R.string.contact_has_been_removed), 5000)
                     .setAction(
-                        getString(R.string.cancel),
-                        View.OnClickListener { viewModel.restoreUser(user) })
+                        getString(R.string.cancel)
+                    ) { viewModel.restoreUser(user) }
                     .setActionTextColor(
                         ContextCompat.getColor(
                             this@RecyclerActivity,
@@ -46,14 +45,14 @@ class RecyclerActivity : AppCompatActivity() {
                     .show()
             }
         })
-        viewModel.usersLiveData.observe(this) {
-            adapter.submitList(it)
-        }
+
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter
 
-
+        viewModel.usersLiveData.observe(this) {
+            adapter.submitList(it.toMutableList())
+        }
 
         binding.addContactTextView.setOnClickListener {
             showAddUserDialog()
@@ -66,7 +65,9 @@ class RecyclerActivity : AppCompatActivity() {
             override fun onDataEntered(data: Bundle) {
                 val userName = data.getString("userName")
                 val userCareer = data.getString("userCareer")
-                viewModel.addUser(User(userName!!, userCareer!!, "", 0))
+                if (userCareer!!.isNotBlank() && userName!!.isNotBlank()) {
+                    viewModel.addUser(User(userName, userCareer, "", 0))
+                }
             }
         })
         dialogFragment.show(supportFragmentManager, AddUserDialogFragment.TAG)

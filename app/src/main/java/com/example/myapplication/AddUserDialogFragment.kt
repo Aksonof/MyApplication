@@ -1,12 +1,12 @@
 package com.example.myapplication
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.example.myapplication.databinding.AddUserDialogBinding
+import com.example.myapplication.model.User
 
 
 interface AddUserDialogListener {
@@ -44,6 +44,10 @@ class AddUserDialogFragment(private val listener: AddUserDialogListener) : Dialo
             bundle.putString("userName", binding.userNameEditTextView.text.toString())
             bundle.putString("userCareer", binding.userCareerEditTextView.text.toString())
             listener.onDataEntered(bundle)
+            dismiss()
+        }
+
+        binding.arrowBackImageView.setOnClickListener {
             dismiss()
         }
         return binding.root

@@ -1,7 +1,6 @@
 package com.example.myapplication.model
 
 import com.github.javafaker.Faker
-import com.google.android.material.snackbar.Snackbar
 
 typealias UsersListener = (users: List<User>) -> Unit
 
@@ -23,10 +22,6 @@ class UsersManager {
         }.toMutableList()
     }
 
-    fun getUsers(): List<User> {
-        return users
-    }
-
     fun addUser(user: User) {
         IMAGES.shuffle()
         user.photo = IMAGES[0]
@@ -35,12 +30,9 @@ class UsersManager {
     }
 
     fun deleteUser(user: User) {
-        val indexForDelete = users.indexOfFirst { it.id == user.id }
-        if (indexForDelete != -1) {
-            users.removeAt(indexForDelete)
-            println(indexForDelete)
-            notifyChanges()
-        }
+        users.removeAt(user.id.toInt())
+        users = ArrayList(users)
+        notifyChanges()
     }
 
     fun restoreUser(user: User) {
@@ -58,7 +50,14 @@ class UsersManager {
     }
 
     private fun notifyChanges() {
+        updateAnIds()
         listeners.forEach { it.invoke(users) }
+    }
+
+    private fun updateAnIds() {
+        users.forEachIndexed { index, user ->
+            user.id = index.toLong()
+        }
     }
 
     companion object {

@@ -28,8 +28,6 @@ class UsersAdapter(private val actionListener: UserActionListener) :
         actionListener.onDeleteUser(user)
     }
 
-
-
     class MyItemCallback : DiffUtil.ItemCallback<User>() {
         override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
             return oldItem.id == newItem.id
