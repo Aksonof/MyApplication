@@ -1,46 +1,57 @@
 package com.example.myapplication.model
 
 import com.github.javafaker.Faker
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 
-typealias UsersListener = (users: List<User>) -> Unit
 
 class UsersManager {
 
-    private var users = mutableListOf<User>()
-    private val listeners = mutableSetOf<UsersListener>()
+    private val faker: Faker = Faker.instance()
 
-    init {
-        val faker = Faker.instance()
-        IMAGES.shuffle()
-        users = (0..50).map {
-            User(
-                name = faker.funnyName().name(),
-                career = faker.job().title(),
-                photo = IMAGES[it % IMAGES.size],
-                id = it.toLong()
-            )
-        }.toMutableList()
+
+    private val usersFlow = MutableStateFlow(
+        List(100) { index -> randomUser(id = index + 1L) }
+    )
+
+    private fun randomUser(id: Long): User = User(
+        name = faker.funnyName().name(),
+        career = faker.job().title(),
+        photo = IMAGES[(id.rem(IMAGES.size)).toInt()],
+        id = id
+    )
+
+    fun getUsers(): Flow<List<User>> {
+        return usersFlow
     }
 
-    fun addUser(user: User) {
+
+   /* fun addUser(user: User) {
         IMAGES.shuffle()
         user.photo = IMAGES[0]
         users.add(user.id.toInt(), user)
-        notifyChanges()
+
+    }*/
+
+    fun delete(user: User) {
+        usersFlow.update { oldList ->
+            oldList.filter { it.id != user.id }
+        }
     }
 
-    fun deleteUser(user: User) {
+   /* fun deleteUser(user: User) {
         users.removeAt(user.id.toInt())
         users = ArrayList(users)
         notifyChanges()
-    }
-
+    }*/
+/*
     fun restoreUser(user: User) {
         users.add(user.id.toInt(), user)
         notifyChanges()
-    }
+    }*/
 
-    fun addListener(listener: UsersListener) {
+   /* fun addListener(listener: UsersListener) {
         listeners.add(listener)
         listener.invoke(users)
     }
@@ -58,10 +69,10 @@ class UsersManager {
         users.forEachIndexed { index, user ->
             user.id = index.toLong()
         }
-    }
+    }*/
 
     companion object {
-        private val IMAGES = mutableListOf(
+        private val IMAGES = listOf(
             "https://images.unsplash.com/photo-1600267185393-e158a98703de?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=600&ixid=MnwxfDB8MXxyYW5kb218fHx8fHx8fHwxNjI0MDE0NjQ0&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=800",
             "https://images.unsplash.com/photo-1579710039144-85d6bdffddc9?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=600&ixid=MnwxfDB8MXxyYW5kb218fHx8fHx8fHwxNjI0MDE0Njk1&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=800",
             "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=600&ixid=MnwxfDB8MXxyYW5kb218fHx8fHx8fHwxNjI0MDE0ODE0&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=800",

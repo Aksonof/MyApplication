@@ -2,9 +2,11 @@ package com.example.myapplication
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.myapplication.model.User
-import com.example.myapplication.model.UsersListener
 import com.example.myapplication.model.UsersManager
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class UsersListViewModel(private val usersManager: UsersManager) : ViewModel() {
 
@@ -12,32 +14,25 @@ class UsersListViewModel(private val usersManager: UsersManager) : ViewModel() {
     private val _usersLiveData = MutableLiveData<List<User>>()
     val usersLiveData = _usersLiveData
 
-    private val listener: UsersListener = {
-        _usersLiveData.value = it
-    }
-
     init {
-        loadUsers()
+        viewModelScope.launch {
+            usersManager.getUsers().collectLatest { usersList ->
+                _usersLiveData.value = usersList
+            }
+        }
     }
 
-    private fun loadUsers() {
-        usersManager.addListener(listener)
-    }
 
     fun deleteUser(user: User) {
-        usersManager.deleteUser(user)
+        usersManager.delete(user)
     }
 
-    fun restoreUser(user: User) {
+    /*fun restoreUser(user: User) {
         usersManager.restoreUser(user)
     }
 
     fun addUser(user: User) {
         usersManager.addUser(user)
-    }
+    }*/
 
-    override fun onCleared() {
-        super.onCleared()
-        usersManager.removeListener(listener)
-    }
 }

@@ -32,7 +32,7 @@ class RecyclerActivity : AppCompatActivity() {
             override fun onDeleteUser(user: User) {
                 viewModel.deleteUser(user)
 
-                Snackbar.make(binding.root, getString(R.string.contact_has_been_removed), 5000)
+                /*Snackbar.make(binding.root, getString(R.string.contact_has_been_removed), 5000)
                     .setAction(
                         getString(R.string.cancel)
                     ) { viewModel.restoreUser(user) }
@@ -42,7 +42,7 @@ class RecyclerActivity : AppCompatActivity() {
                             R.color.my_light_primary
                         )
                     )
-                    .show()
+                    .show()*/
             }
         })
 
@@ -54,12 +54,12 @@ class RecyclerActivity : AppCompatActivity() {
             adapter.submitList(it.toMutableList())
         }
 
-        binding.addContactTextView.setOnClickListener {
+        /*binding.addContactTextView.setOnClickListener {
             showAddUserDialog()
-        }
+        }*/
     }
 
-    private fun showAddUserDialog() {
+    /*private fun showAddUserDialog() {
 
         val dialogFragment = AddUserDialogFragment(object : AddUserDialogListener {
             override fun onDataEntered(data: Bundle) {
@@ -71,5 +71,5 @@ class RecyclerActivity : AppCompatActivity() {
             }
         })
         dialogFragment.show(supportFragmentManager, AddUserDialogFragment.TAG)
-    }
+    }*/
 }
