@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 
 class UsersListViewModel(private val usersManager: UsersManager) : ViewModel() {
 
-
     private val _usersLiveData = MutableLiveData<List<User>>()
     val usersLiveData = _usersLiveData
 
@@ -24,15 +23,15 @@ class UsersListViewModel(private val usersManager: UsersManager) : ViewModel() {
 
 
     fun deleteUser(user: User) {
-        usersManager.delete(user)
+        usersManager.deleteUser(user)
     }
 
-    /*fun restoreUser(user: User) {
-        usersManager.restoreUser(user)
+    fun restoreUser(listWithDeletedUser: List<User>?) {
+        usersManager.restoreUser(listWithDeletedUser)
     }
 
     fun addUser(user: User) {
         usersManager.addUser(user)
-    }*/
+    }
 
 }

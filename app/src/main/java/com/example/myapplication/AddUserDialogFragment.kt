@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.example.myapplication.databinding.AddUserDialogBinding
-import com.example.myapplication.model.User
 
 
 interface AddUserDialogListener {

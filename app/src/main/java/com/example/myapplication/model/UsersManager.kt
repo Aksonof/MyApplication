@@ -9,69 +9,44 @@ import kotlinx.coroutines.flow.update
 class UsersManager {
 
     private val faker: Faker = Faker.instance()
-
+    private var id: Long = SIZE.toLong()
 
     private val usersFlow = MutableStateFlow(
-        List(100) { index -> randomUser(id = index + 1L) }
+        List(SIZE) { index -> randomUser(id = index + 1L) }
     )
 
     private fun randomUser(id: Long): User = User(
-        name = faker.funnyName().name(),
+        name = faker.dune().character(),
         career = faker.job().title(),
         photo = IMAGES[(id.rem(IMAGES.size)).toInt()],
         id = id
     )
 
-    fun getUsers(): Flow<List<User>> {
-        return usersFlow
-    }
+    fun getUsers(): Flow<List<User>> = usersFlow
 
 
-   /* fun addUser(user: User) {
-        IMAGES.shuffle()
-        user.photo = IMAGES[0]
-        users.add(user.id.toInt(), user)
-
-    }*/
-
-    fun delete(user: User) {
+    fun deleteUser(user: User) {
         usersFlow.update { oldList ->
             oldList.filter { it.id != user.id }
         }
     }
 
-   /* fun deleteUser(user: User) {
-        users.removeAt(user.id.toInt())
-        users = ArrayList(users)
-        notifyChanges()
-    }*/
-/*
-    fun restoreUser(user: User) {
-        users.add(user.id.toInt(), user)
-        notifyChanges()
-    }*/
 
-   /* fun addListener(listener: UsersListener) {
-        listeners.add(listener)
-        listener.invoke(users)
-    }
-
-    fun removeListener(listener: UsersListener) {
-        listeners.remove(listener)
-    }
-
-    private fun notifyChanges() {
-        updateAnIds()
-        listeners.forEach { it.invoke(users) }
-    }
-
-    private fun updateAnIds() {
-        users.forEachIndexed { index, user ->
-            user.id = index.toLong()
+    fun addUser(user: User) {
+        user.id = ++id
+        user.photo = IMAGES[(id.rem(IMAGES.size)).toInt()]
+        usersFlow.update { oldList ->
+            listOf(user) + oldList
         }
-    }*/
+    }
+
+
+    fun restoreUser(listWithDeletedUser: List<User>?) {
+        usersFlow.update { listWithDeletedUser!! }
+    }
 
     companion object {
+        private const val SIZE = 15
         private val IMAGES = listOf(
             "https://images.unsplash.com/photo-1600267185393-e158a98703de?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=600&ixid=MnwxfDB8MXxyYW5kb218fHx8fHx8fHwxNjI0MDE0NjQ0&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=800",
             "https://images.unsplash.com/photo-1579710039144-85d6bdffddc9?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=600&ixid=MnwxfDB8MXxyYW5kb218fHx8fHx8fHwxNjI0MDE0Njk1&ixlib=rb-1.2.1&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=800",
@@ -94,6 +69,5 @@ class UsersManager {
             "https://images.unsplash.com/photo-1688407578133-3f4b4ecf798d?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         )
     }
-
 
 }

@@ -20,7 +20,6 @@ class RecyclerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRecyclerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         val viewModelFactory = ViewModelFactory(applicationContext as App)
 
         viewModel = ViewModelProvider(
@@ -30,36 +29,35 @@ class RecyclerActivity : AppCompatActivity() {
 
         adapter = UsersAdapter(object : UserActionListener {
             override fun onDeleteUser(user: User) {
+                val listBeforeDeletedContact = viewModel.usersLiveData.value
                 viewModel.deleteUser(user)
 
-                /*Snackbar.make(binding.root, getString(R.string.contact_has_been_removed), 5000)
+                Snackbar.make(binding.root, getString(R.string.contact_has_been_removed), 5000)
                     .setAction(
                         getString(R.string.cancel)
-                    ) { viewModel.restoreUser(user) }
+                    ) { viewModel.restoreUser(listBeforeDeletedContact) }
                     .setActionTextColor(
                         ContextCompat.getColor(
                             this@RecyclerActivity,
                             R.color.my_light_primary
                         )
                     )
-                    .show()*/
+                    .show()
             }
         })
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter
-
         viewModel.usersLiveData.observe(this) {
             adapter.submitList(it.toMutableList())
         }
-
-        /*binding.addContactTextView.setOnClickListener {
+        binding.addContactTextView.setOnClickListener {
             showAddUserDialog()
-        }*/
+        }
     }
 
-    /*private fun showAddUserDialog() {
+    private fun showAddUserDialog() {
 
         val dialogFragment = AddUserDialogFragment(object : AddUserDialogListener {
             override fun onDataEntered(data: Bundle) {
@@ -67,9 +65,10 @@ class RecyclerActivity : AppCompatActivity() {
                 val userCareer = data.getString("userCareer")
                 if (userCareer!!.isNotBlank() && userName!!.isNotBlank()) {
                     viewModel.addUser(User(userName, userCareer, "", 0))
+                    binding.recyclerView.smoothScrollToPosition(0)
                 }
             }
         })
         dialogFragment.show(supportFragmentManager, AddUserDialogFragment.TAG)
-    }*/
+    }
 }
