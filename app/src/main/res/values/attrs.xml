@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <declare-styleable name="CustomRegistrationButtonView">
+
+        <attr name="registrationBtnBackground" format="reference" />
+
+        <attr name="logoNameText" format="string" />
+        <attr name="logoNameTextSize" format="dimension" />
+        <attr name="logoNameTextColor" format="color" />
+        <attr name="logoNameTextFont" format="reference" />
+
+        <attr name="distanceBetweenElements" format="dimension" />
+
+        <attr name="logoImage" format="reference" />
+        <attr name="logoImageWidth" format="dimension" />
+        <attr name="logoImageHeight" format="dimension" />
+
+    </declare-styleable>
+
+
+</resources>

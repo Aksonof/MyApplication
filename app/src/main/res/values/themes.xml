@@ -13,7 +13,7 @@
     </style>
 
     <style name="MyLightButtonStyle" parent="Widget.AppCompat.Button">
-        <item name="android:background">@drawable/google_registration</item>
+        <item name="android:background">@drawable/google_registration_background</item>
         <item name="android:textColor">@color/gray_text</item>
     </style>
 

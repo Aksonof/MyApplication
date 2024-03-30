@@ -50,5 +50,6 @@
     <string name="save">Save</string>
     <string name="phone">Phone</string>
     <string name="date_of_birth">Date of birth</string>
+    <string name="logo">logo</string>
 
 </resources>

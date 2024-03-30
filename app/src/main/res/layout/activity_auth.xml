@@ -117,17 +117,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
 
-        <androidx.appcompat.widget.AppCompatButton
-            style="?attr/buttonStyle"
+        <com.example.myapplication.CustomRegistrationButtonView
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_gravity="top|center"
-            android:drawableLeft="@drawable/google_icon"
-            android:drawablePadding="-110dp"
-            android:paddingLeft="110dp"
-            android:text="@string/Google"
-            android:textSize="16sp"
-            tools:ignore="RtlHardcoded,RtlSymmetry,TouchTargetSizeCheck" />
+            app:logoImageHeight="20dp"
+            app:logoImageWidth="20dp"
+            app:registrationBtnBackground="@drawable/google_sign_in_dark_button_background"
+            tools:ignore="TouchTargetSizeCheck" />
 
 
         <TextView
