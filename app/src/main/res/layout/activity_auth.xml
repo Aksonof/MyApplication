@@ -118,6 +118,7 @@
 
 
         <com.example.myapplication.CustomRegistrationButtonView
+            android:id="@+id/customRegistrationButton"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             app:logoImageHeight="20dp"

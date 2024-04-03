@@ -50,6 +50,7 @@
     <string name="save">Зберегти</string>
     <string name="phone">Номер телефону</string>
     <string name="date_of_birth">Дата народження</string>
+    <string name="logo">Логотип</string>
 
 
 </resources>

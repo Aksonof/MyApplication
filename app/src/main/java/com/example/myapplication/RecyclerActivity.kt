@@ -5,8 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.adapter.UserActionListener
+import com.example.myapplication.adapter.UsersAdapter
 import com.example.myapplication.databinding.ActivityRecyclerBinding
 import com.example.myapplication.model.User
+import com.example.myapplication.viewModel.UsersListViewModel
+import com.example.myapplication.viewModel.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 
 class RecyclerActivity : AppCompatActivity() {
