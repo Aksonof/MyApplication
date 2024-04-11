@@ -11,8 +11,8 @@
 
     <color name="my_light_background">#FFFFFFFF</color>
     <color name="my_light_primary">#008080</color>
-    <color name="my_light_text_primary">#FF000000</color>
-    <color name="my_light_text_secondary">#FF000000</color>
+    <color name="my_light_text_primary">#FFFFFFFF</color>
+    <color name="my_light_text_secondary">#B2B2B3</color>
 
 
     <color name="my_dark_primary">#008080</color>

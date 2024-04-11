@@ -5,6 +5,12 @@
       <entry key="AuthActivity">
         <State />
       </entry>
+      <entry key="HostActivity">
+        <State />
+      </entry>
+      <entry key="MainActivity">
+        <State />
+      </entry>
       <entry key="RecyclerActivity">
         <State />
       </entry>
