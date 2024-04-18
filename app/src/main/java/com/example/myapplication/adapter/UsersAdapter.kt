@@ -14,6 +14,7 @@ import com.example.myapplication.model.User
 
 interface UserActionListener {
     fun onDeleteUser(user: User)
+    fun onUserDetails(user: User)
 }
 
 class UsersAdapter(private val actionListener: UserActionListener) :
@@ -25,7 +26,16 @@ class UsersAdapter(private val actionListener: UserActionListener) :
 
     override fun onClick(v: View) {
         val user = v.tag as User
-        actionListener.onDeleteUser(user)
+
+        when (v.id) {
+            R.id.deleteUserView -> {
+                actionListener.onDeleteUser(user)
+            }
+
+            else -> {
+                actionListener.onUserDetails(user)
+            }
+        }
     }
 
     class MyItemCallback : DiffUtil.ItemCallback<User>() {
@@ -43,12 +53,14 @@ class UsersAdapter(private val actionListener: UserActionListener) :
         val inflater = LayoutInflater.from(parent.context)
         val binding = UserPatternBinding.inflate(inflater, parent, false)
         binding.deleteUserView.setOnClickListener(this)
+        binding.root.setOnClickListener(this)
         return UsersViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: UsersViewHolder, position: Int) {
         val user = getItem(position)
         with(holder.binding) {
+
             holder.itemView.tag = user
             deleteUserView.tag = user
             userNameView.text = user.name

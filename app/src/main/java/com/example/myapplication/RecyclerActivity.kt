@@ -14,7 +14,7 @@ import com.example.myapplication.viewModel.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 
 class RecyclerActivity : AppCompatActivity() {
-
+/*
     private lateinit var binding: ActivityRecyclerBinding
     private lateinit var adapter: UsersAdapter
     private lateinit var viewModel: UsersListViewModel
@@ -48,6 +48,10 @@ class RecyclerActivity : AppCompatActivity() {
                     )
                     .show()
             }
+
+            override fun onUserDetails(user: User) {
+                TODO("Not yet implemented")
+            }
         })
 
         val layoutManager = LinearLayoutManager(this)
@@ -74,5 +78,5 @@ class RecyclerActivity : AppCompatActivity() {
             }
         })
         dialogFragment.show(supportFragmentManager, AddUserDialogFragment.TAG)
-    }
+    }*/
 }
