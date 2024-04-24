@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.AddUserDialogFragment
 import com.example.myapplication.AddUserDialogListener
@@ -67,7 +68,13 @@ class MyContactsFragment : Fragment() {
             }
 
             override fun onUserDetails(user: User) {
-                findNavController().navigate(R.id.action_myContactsFragment_to_contactsProfileFragment)
+                val action =
+                    MyContactsFragmentDirections.actionMyContactsFragmentToContactsProfileFragment(
+                        user.photo,
+                        user.name,
+                        user.career
+                    )
+                findNavController().navigate(action)
             }
         })
 
@@ -79,6 +86,9 @@ class MyContactsFragment : Fragment() {
         }
         binding.addContactTextView.setOnClickListener {
             showAddUserDialog()
+        }
+        binding.arrowBackImageView.setOnClickListener {
+            findNavController().popBackStack()
         }
 
     }

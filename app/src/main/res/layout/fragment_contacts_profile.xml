@@ -31,6 +31,7 @@
             tools:targetApi="p" />
 
         <ImageView
+            android:id="@+id/arrowBackImageView"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="17dp"
