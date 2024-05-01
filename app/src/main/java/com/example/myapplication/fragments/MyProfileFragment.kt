@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navOptions
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentMyProfileBinding
 
@@ -30,5 +29,10 @@ class MyProfileFragment : Fragment() {
         binding.viewMyContactsButton.setOnClickListener {
             findNavController().navigate(R.id.action_myProfileFragment_to_myContactsFragment)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

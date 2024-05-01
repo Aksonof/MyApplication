@@ -8,10 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.AddUserDialogFragment
-import com.example.myapplication.AddUserDialogListener
 import com.example.myapplication.App
 import com.example.myapplication.R
 import com.example.myapplication.adapter.UserActionListener
@@ -42,7 +39,6 @@ class MyContactsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         val viewModelFactory = ViewModelFactory(requireContext().applicationContext as App)
         viewModel = ViewModelProvider(this, viewModelFactory)[UsersListViewModel::class.java]
 
@@ -57,7 +53,9 @@ class MyContactsFragment : Fragment() {
                     Snackbar.LENGTH_LONG
                 ).setAction(
                     getString(R.string.cancel)
-                ) { viewModel.restoreUser(listBeforeDeletedContact) }
+                ) {
+                    viewModel.restoreUser(listBeforeDeletedContact)
+                }
                     .setActionTextColor(
                         ContextCompat.getColor(
                             requireContext(),
@@ -84,34 +82,36 @@ class MyContactsFragment : Fragment() {
         viewModel.usersLiveData.observe(viewLifecycleOwner) {
             adapter.submitList(it.toMutableList())
         }
+
         binding.addContactTextView.setOnClickListener {
             showAddUserDialog()
         }
+        setupDialogFragmentListener()
+
         binding.arrowBackImageView.setOnClickListener {
             findNavController().popBackStack()
         }
 
     }
 
+    private fun setupDialogFragmentListener() {
+        AddUserDialogFragment.setDialogResListener(
+            childFragmentManager,
+            viewLifecycleOwner
+        ) { name, career ->
+            viewModel.addUser(User(name, career, "", 0L))
+            binding.recyclerView.smoothScrollToPosition(0)
+        }
+    }
+
 
     private fun showAddUserDialog() {
-        val dialogFragment = AddUserDialogFragment(object : AddUserDialogListener {
-            override fun onDataEntered(data: Bundle) {
-                val userName = data.getString("userName")
-                val userCareer = data.getString("userCareer")
-                if (!userCareer.isNullOrBlank() && !userName.isNullOrBlank()) {
-                    viewModel.addUser(User(userName, userCareer, "", 0))
-                    binding.recyclerView.smoothScrollToPosition(0)
-                }
-            }
-        })
-        dialogFragment.show(requireFragmentManager(), AddUserDialogFragment.TAG)
+        AddUserDialogFragment.show(childFragmentManager, AddUserDialogFragment.TAG)
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-
 }

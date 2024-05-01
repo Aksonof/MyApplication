@@ -17,6 +17,14 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <argument
+            android:name="userName"
+            android:defaultValue="Garry Earl"
+            app:argType="string" />
+        <argument
+            android:name="userCareer"
+            android:defaultValue="Engineer"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/contactsProfileFragment"
