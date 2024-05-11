@@ -1,175 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <!-- Separate gui -->
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_end="365dp" />
-
-    <!-- Blue top -->
-    <View
-        android:id="@+id/firstHalf"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/blue"
-        app:layout_constraintBottom_toTopOf="@id/guideline"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- White bottom -->
-    <View
-        android:id="@+id/secondHalf"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline" />
-
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/viewMyContactsButton"
-        android:layout_width="0dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/rounded_button_background"
-        android:letterSpacing="0.1"
-        android:text="@string/VIEW_MY_CONTACTS"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/editButton"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/edit_button"
-        android:text="@string/Edit_profile"
-        android:textAllCaps="false"
-        android:textColor="@color/blue"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/viewMyContactsButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="18dp"
-        android:layout_marginStart="58dp"
-        android:layout_marginEnd="58dp"
-        android:layout_marginBottom="16dp"
-        android:gravity="center"
-        android:text="@string/Go_to"
-        android:textColor="@color/blue"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/editButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="18dp"
-        android:layout_marginVertical="305dp"
-        android:layout_marginLeft="131dp"
-        android:layout_marginRight="131dp"
-        android:gravity="center"
-        android:text="@string/Home_address"
-        android:textColor="@color/gray"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-
-        />
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="18dp"
-        android:layout_marginVertical="271dp"
-        android:layout_marginLeft="157dp"
-        android:layout_marginRight="157dp"
-        android:gravity="center"
-        android:text="@string/Career"
-        android:textColor="?android:textColorSecondary"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/userNameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="23dp"
-        android:layout_marginVertical="240dp"
-        android:layout_marginLeft="114dp"
-        android:layout_marginRight="114dp"
-        android:gravity="center"
-        android:text="@string/Name"
-        android:textColor="?android:textColorPrimary"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <FrameLayout
-        android:layout_width="327dp"
-        android:layout_height="40dp"
-        android:layout_marginVertical="28dp"
-        android:layout_marginLeft="17dp"
-        android:layout_marginRight="17dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="31dp"
-            android:layout_gravity="start|center_vertical"
-            android:background="@android:color/transparent"
-            android:gravity="center"
-            android:text="@string/Settings"
-            android:textColor="@color/white"
-            android:textSize="24sp" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/logOutViewButton"
-            android:layout_width="119dp"
-            android:layout_height="40dp"
-            android:layout_gravity="end|bottom"
-            android:background="@drawable/log_out_button_background"
-            android:text="@string/Log_out"
-            android:textAllCaps="false"
-            android:textColor="@color/gray"
-            android:textSize="16sp"
-            tools:ignore="TouchTargetSizeCheck" />
-    </FrameLayout>
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:layout_width="113dp"
-        android:layout_height="113dp"
-        android:layout_marginVertical="103dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ava"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/circleImageView" />
-
+        app:defaultNavHost="true"
+        android:layout_height="match_parent"
+        app:navGraph="@navigation/nav_graph_one"
+        tools:layout="@layout/fragment_view_pager" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

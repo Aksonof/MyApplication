@@ -72,7 +72,14 @@ class MyContactsFragment : Fragment() {
                         user.name,
                         user.career
                     )
-                findNavController().navigate(action)
+
+                val action2 =
+                    ViewPagerFragmentDirections.actionViewPagerFragmentToContactsProfileFragment2(
+                        user.photo,
+                        user.name,
+                        user.career
+                    )
+                findNavController().navigate(action2)
             }
         })
 
