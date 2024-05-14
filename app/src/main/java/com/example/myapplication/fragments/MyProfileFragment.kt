@@ -26,8 +26,10 @@ class MyProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.viewMyContactsButton.setOnClickListener {
-            findNavController().navigate(R.id.action_myProfileFragment_to_myContactsFragment)
+
+
         }
     }
 

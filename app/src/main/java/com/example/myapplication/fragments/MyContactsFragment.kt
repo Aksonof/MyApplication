@@ -67,19 +67,12 @@ class MyContactsFragment : Fragment() {
 
             override fun onUserDetails(user: User) {
                 val action =
-                    MyContactsFragmentDirections.actionMyContactsFragmentToContactsProfileFragment(
+                    ViewPagerFragmentDirections.actionViewPagerFragmentToContactsProfileFragment(
                         user.photo,
                         user.name,
                         user.career
                     )
-
-                val action2 =
-                    ViewPagerFragmentDirections.actionViewPagerFragmentToContactsProfileFragment2(
-                        user.photo,
-                        user.name,
-                        user.career
-                    )
-                findNavController().navigate(action2)
+                findNavController().navigate(action)
             }
         })
 
@@ -98,7 +91,6 @@ class MyContactsFragment : Fragment() {
         binding.arrowBackImageView.setOnClickListener {
             findNavController().popBackStack()
         }
-
     }
 
     private fun setupDialogFragmentListener() {
@@ -111,11 +103,9 @@ class MyContactsFragment : Fragment() {
         }
     }
 
-
     private fun showAddUserDialog() {
         AddUserDialogFragment.show(childFragmentManager, AddUserDialogFragment.TAG)
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

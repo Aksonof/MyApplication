@@ -20,21 +20,10 @@
         <activity
             android:name=".MainActivity"
             android:exported="true">
-
-
         </activity>
 
         <activity
             android:name=".AuthActivity"
-            android:exported="true">
-        </activity>
-
-        <activity
-            android:name=".RecyclerActivity"
-            android:exported="true">
-        </activity>
-
-        <activity android:name=".HostActivity"
             android:exported="true">
 
             <intent-filter>
@@ -43,6 +32,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
 
     </application>
 
