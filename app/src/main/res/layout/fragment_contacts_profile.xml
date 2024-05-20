@@ -137,7 +137,7 @@
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/viewMyContactsButton"
+        android:id="@+id/messageButton"
         android:layout_width="0dp"
         android:layout_height="55dp"
         android:layout_marginStart="16dp"
