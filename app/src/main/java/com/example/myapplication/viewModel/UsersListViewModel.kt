@@ -35,4 +35,8 @@ class UsersListViewModel(private val usersManager: UsersManager) : ViewModel() {
         usersManager.addUser(user)
     }
 
+    fun selectUser(user: User) {
+        usersManager.selectUser(user)
+    }
+
 }

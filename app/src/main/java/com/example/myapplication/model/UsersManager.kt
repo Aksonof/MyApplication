@@ -19,7 +19,8 @@ class UsersManager {
         name = faker.dune().character(),
         career = faker.job().title(),
         photo = IMAGES[(id.rem(IMAGES.size)).toInt()],
-        id = id
+        id = id,
+        isSelected = false
     )
 
     fun getUsers(): Flow<List<User>> = usersFlow
@@ -43,6 +44,18 @@ class UsersManager {
 
     fun restoreUser(listWithDeletedUser: List<User>?) {
         usersFlow.update { listWithDeletedUser!! }
+    }
+
+    fun selectUser(user: User) {
+        usersFlow.update { oldList ->
+            oldList.map { existingUser ->
+                if (existingUser.id == user.id) {
+                    existingUser.copy(isSelected = !existingUser.isSelected)
+                } else {
+                    existingUser
+                }
+            }
+        }
     }
 
     companion object {

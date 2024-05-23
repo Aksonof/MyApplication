@@ -74,11 +74,18 @@ class MyContactsFragment : Fragment() {
                     )
                 findNavController().navigate(action)
             }
+
+            override fun onSelectUser(user: User) {
+                viewModel.selectUser(user)
+            }
+
+
         })
 
         val layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter
+
         viewModel.usersLiveData.observe(viewLifecycleOwner) {
             adapter.submitList(it.toMutableList())
         }
@@ -98,7 +105,7 @@ class MyContactsFragment : Fragment() {
             childFragmentManager,
             viewLifecycleOwner
         ) { name, career ->
-            viewModel.addUser(User(name, career, "", 0L))
+            viewModel.addUser(User(name, career, "", 0L, false))
             binding.recyclerView.smoothScrollToPosition(0)
         }
     }
