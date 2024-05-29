@@ -105,7 +105,12 @@ class MyContactsFragment : Fragment() {
             childFragmentManager,
             viewLifecycleOwner
         ) { name, career ->
-            viewModel.addUser(User(name, career, "", 0L, false))
+            viewModel.addUser(
+                User(
+                    name, career, "",
+                    ((viewModel.usersLiveData.value?.size)?.plus(1))!!.toLong(), false
+                )
+            )
             binding.recyclerView.smoothScrollToPosition(0)
         }
     }

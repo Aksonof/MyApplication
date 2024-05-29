@@ -1,10 +1,10 @@
 package com.example.myapplication.adapter
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.marginStart
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +17,6 @@ import com.example.myapplication.model.User
 interface UserActionListener {
     fun onDeleteUser(user: User)
     fun onUserDetails(user: User)
-
     fun onSelectUser(user: User)
 }
 
@@ -35,7 +34,6 @@ class UsersAdapter(private val actionListener: UserActionListener) :
 
         if (isModeActive) {
             actionListener.onSelectUser(user)
-
         } else {
             when (v.id) {
                 R.id.deleteUserView -> {
@@ -49,10 +47,12 @@ class UsersAdapter(private val actionListener: UserActionListener) :
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onLongClick(v: View?): Boolean {
         val user = v?.tag as User
         isModeActive = true
         actionListener.onSelectUser(user)
+        notifyDataSetChanged()
         return true
     }
 
@@ -79,22 +79,28 @@ class UsersAdapter(private val actionListener: UserActionListener) :
     override fun onBindViewHolder(holder: UsersViewHolder, position: Int) {
         val user = getItem(position)
 
-        if (user.isSelected) {
-            holder.binding.checkBox.visibility = View.VISIBLE
-            holder.binding.deleteUserView.visibility = View.GONE
+
+        if (isModeActive) {
+            holder.binding.root.setBackgroundResource(R.drawable.selected_user_background)
             val layoutParams =
                 holder.binding.userPhotoView.layoutParams as ViewGroup.MarginLayoutParams
-            layoutParams.marginStart = dpToPx(32, holder.binding.root.context)
+            layoutParams.marginStart =
+                (40 * holder.binding.root.context.resources.displayMetrics.density).toInt()
             holder.binding.userPhotoView.layoutParams = layoutParams
-            holder.binding.checkBox.toggle()
-            holder.binding.root.setBackgroundResource(R.drawable.selected_user_background)
-        }
+            holder.binding.deleteUserView.visibility = View.GONE
+            holder.binding.checkBox.visibility = View.VISIBLE
 
+
+            holder.binding.checkBox.isChecked = user.isSelected
+
+
+        }
 
         with(holder.binding) {
 
             holder.itemView.tag = user
             deleteUserView.tag = user
+
             userNameView.text = user.name
             userCareerView.text = user.career
             if (user.photo.isNotBlank()) {
@@ -111,9 +117,7 @@ class UsersAdapter(private val actionListener: UserActionListener) :
         }
     }
 
-    fun dpToPx(dp: Int, context: Context): Int {
-        return (dp * context.resources.displayMetrics.density).toInt()
-    }
+
 }
 
 

@@ -1,5 +1,6 @@
 package com.example.myapplication.model
 
+import android.util.Log
 import com.github.javafaker.Faker
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +13,7 @@ class UsersManager {
     private var id: Long = SIZE.toLong()
 
     private val usersFlow = MutableStateFlow(
-        List(SIZE) { index -> randomUser(id = index + 1L) }
+        List(SIZE) { index -> randomUser(index + 1L) }
     )
 
     private fun randomUser(id: Long): User = User(
@@ -34,8 +35,8 @@ class UsersManager {
 
 
     fun addUser(user: User) {
-        user.id = ++id
         user.photo = IMAGES[(id.rem(IMAGES.size)).toInt()]
+
         usersFlow.update { oldList ->
             listOf(user) + oldList
         }
