@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +17,8 @@ interface UserActionListener {
     fun onDeleteUser(user: User)
     fun onUserDetails(user: User)
     fun onSelectUser(user: User)
+
+    fun onMultiSelectModeActive()
 }
 
 class UsersAdapter(private val actionListener: UserActionListener) :
@@ -29,20 +30,20 @@ class UsersAdapter(private val actionListener: UserActionListener) :
     class UsersViewHolder(val binding: UserPatternBinding) : RecyclerView.ViewHolder(binding.root)
 
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onClick(v: View) {
         val user = v.tag as User
 
         if (isModeActive) {
+
             actionListener.onSelectUser(user)
+            if (!isModeActive) {
+                notifyDataSetChanged()
+            }
         } else {
             when (v.id) {
-                R.id.deleteUserView -> {
-                    actionListener.onDeleteUser(user)
-                }
-
-                else -> {
-                    actionListener.onUserDetails(user)
-                }
+                R.id.deleteUserView -> actionListener.onDeleteUser(user)
+                else -> actionListener.onUserDetails(user)
             }
         }
     }
@@ -51,6 +52,7 @@ class UsersAdapter(private val actionListener: UserActionListener) :
     override fun onLongClick(v: View?): Boolean {
         val user = v?.tag as User
         isModeActive = true
+        actionListener.onMultiSelectModeActive()
         actionListener.onSelectUser(user)
         notifyDataSetChanged()
         return true
@@ -82,18 +84,27 @@ class UsersAdapter(private val actionListener: UserActionListener) :
 
         if (isModeActive) {
             holder.binding.root.setBackgroundResource(R.drawable.selected_user_background)
+
             val layoutParams =
                 holder.binding.userPhotoView.layoutParams as ViewGroup.MarginLayoutParams
             layoutParams.marginStart =
                 (40 * holder.binding.root.context.resources.displayMetrics.density).toInt()
             holder.binding.userPhotoView.layoutParams = layoutParams
+
+
+
             holder.binding.deleteUserView.visibility = View.GONE
             holder.binding.checkBox.visibility = View.VISIBLE
-
-
             holder.binding.checkBox.isChecked = user.isSelected
-
-
+        } else {
+            holder.binding.root.setBackgroundResource(R.drawable.item_background_selector)
+            val layoutParams =
+                holder.binding.userPhotoView.layoutParams as ViewGroup.MarginLayoutParams
+            layoutParams.marginStart =
+                (8 * holder.binding.root.context.resources.displayMetrics.density).toInt()
+            holder.binding.userPhotoView.layoutParams = layoutParams
+            holder.binding.deleteUserView.visibility = View.VISIBLE
+            holder.binding.checkBox.visibility = View.GONE
         }
 
         with(holder.binding) {

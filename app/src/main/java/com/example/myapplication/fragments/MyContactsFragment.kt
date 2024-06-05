@@ -77,9 +77,26 @@ class MyContactsFragment : Fragment() {
 
             override fun onSelectUser(user: User) {
                 viewModel.selectUser(user)
+
+                if (!viewModel.isAnyContactSelect()) {
+                    adapter.isModeActive = false
+                    val layoutParams =
+                        binding.recyclerView.layoutParams as ViewGroup.MarginLayoutParams
+                    layoutParams.bottomMargin =
+                        (50 * binding.root.context.resources.displayMetrics.density).toInt()
+                    binding.recyclerView.layoutParams = layoutParams
+                    binding.bucket.visibility = View.GONE
+                }
             }
 
-
+            override fun onMultiSelectModeActive() {
+                val layoutParams =
+                    binding.recyclerView.layoutParams as ViewGroup.MarginLayoutParams
+                layoutParams.bottomMargin =
+                    (137 * binding.root.context.resources.displayMetrics.density).toInt()
+                binding.recyclerView.layoutParams = layoutParams
+                binding.bucket.visibility = View.VISIBLE
+            }
         })
 
         val layoutManager = LinearLayoutManager(requireContext())

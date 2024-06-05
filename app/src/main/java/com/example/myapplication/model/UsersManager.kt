@@ -4,6 +4,7 @@ import android.util.Log
 import com.github.javafaker.Faker
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 
 
@@ -47,7 +48,12 @@ class UsersManager {
         usersFlow.update { listWithDeletedUser!! }
     }
 
+    fun isAnyContactSelect(): Boolean {
+        return usersFlow.value.any { it.isSelected }
+    }
+
     fun selectUser(user: User) {
+
         usersFlow.update { oldList ->
             oldList.map { existingUser ->
                 if (existingUser.id == user.id) {

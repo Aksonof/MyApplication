@@ -6,4 +6,5 @@ data class User(
     var photo: String,
     val id: Long,
     var isSelected: Boolean
+
 )
