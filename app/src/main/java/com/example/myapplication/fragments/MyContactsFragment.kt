@@ -90,12 +90,26 @@ class MyContactsFragment : Fragment() {
             }
 
             override fun onMultiSelectModeActive() {
-                val layoutParams =
+
+                var layoutParams =
                     binding.recyclerView.layoutParams as ViewGroup.MarginLayoutParams
                 layoutParams.bottomMargin =
                     (137 * binding.root.context.resources.displayMetrics.density).toInt()
                 binding.recyclerView.layoutParams = layoutParams
                 binding.bucket.visibility = View.VISIBLE
+
+                binding.bucket.setOnClickListener {
+                    adapter.isModeActive = false
+                    viewModel.deleteSelectedContacts()
+
+                    layoutParams =
+                        binding.recyclerView.layoutParams as ViewGroup.MarginLayoutParams
+                    layoutParams.bottomMargin =
+                        (50 * binding.root.context.resources.displayMetrics.density).toInt()
+                    binding.recyclerView.layoutParams = layoutParams
+                    binding.bucket.visibility = View.GONE
+                }
+
             }
         })
 

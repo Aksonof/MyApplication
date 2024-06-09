@@ -1,10 +1,8 @@
 package com.example.myapplication.model
 
-import android.util.Log
 import com.github.javafaker.Faker
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 
 
@@ -62,6 +60,12 @@ class UsersManager {
                     existingUser
                 }
             }
+        }
+    }
+
+    fun deleteSelectedContacts() {
+        usersFlow.update { oldList ->
+            oldList.filterNot { it.isSelected }
         }
     }
 

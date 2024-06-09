@@ -42,4 +42,9 @@ class UsersListViewModel(private val usersManager: UsersManager) : ViewModel() {
     fun isAnyContactSelect(): Boolean {
         return usersManager.isAnyContactSelect()
     }
+
+    fun deleteSelectedContacts() {
+        usersManager.deleteSelectedContacts()
+    }
+
 }

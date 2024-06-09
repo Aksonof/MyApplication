@@ -17,7 +17,6 @@ interface UserActionListener {
     fun onDeleteUser(user: User)
     fun onUserDetails(user: User)
     fun onSelectUser(user: User)
-
     fun onMultiSelectModeActive()
 }
 
@@ -25,21 +24,22 @@ class UsersAdapter(private val actionListener: UserActionListener) :
     ListAdapter<User, UsersAdapter.UsersViewHolder>(MyItemCallback()), View.OnClickListener,
     View.OnLongClickListener {
 
-    var isModeActive = false
+    var isModeActive: Boolean = false
+        @SuppressLint("NotifyDataSetChanged")
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     class UsersViewHolder(val binding: UserPatternBinding) : RecyclerView.ViewHolder(binding.root)
 
 
-    @SuppressLint("NotifyDataSetChanged")
     override fun onClick(v: View) {
         val user = v.tag as User
 
         if (isModeActive) {
-
             actionListener.onSelectUser(user)
-            if (!isModeActive) {
-                notifyDataSetChanged()
-            }
+
         } else {
             when (v.id) {
                 R.id.deleteUserView -> actionListener.onDeleteUser(user)
@@ -48,13 +48,11 @@ class UsersAdapter(private val actionListener: UserActionListener) :
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     override fun onLongClick(v: View?): Boolean {
         val user = v?.tag as User
         isModeActive = true
         actionListener.onMultiSelectModeActive()
         actionListener.onSelectUser(user)
-        notifyDataSetChanged()
         return true
     }
 
@@ -75,6 +73,7 @@ class UsersAdapter(private val actionListener: UserActionListener) :
         binding.deleteUserView.setOnClickListener(this)
         binding.root.setOnClickListener(this)
         binding.root.setOnLongClickListener(this)
+        binding.checkBox.setOnClickListener(this)
         return UsersViewHolder(binding)
     }
 
@@ -90,8 +89,6 @@ class UsersAdapter(private val actionListener: UserActionListener) :
             layoutParams.marginStart =
                 (40 * holder.binding.root.context.resources.displayMetrics.density).toInt()
             holder.binding.userPhotoView.layoutParams = layoutParams
-
-
 
             holder.binding.deleteUserView.visibility = View.GONE
             holder.binding.checkBox.visibility = View.VISIBLE
@@ -111,7 +108,7 @@ class UsersAdapter(private val actionListener: UserActionListener) :
 
             holder.itemView.tag = user
             deleteUserView.tag = user
-
+            checkBox.tag = user
             userNameView.text = user.name
             userCareerView.text = user.career
             if (user.photo.isNotBlank()) {
