@@ -19,6 +19,8 @@ import com.example.myapplication.viewModel.UsersListViewModel
 import com.example.myapplication.viewModel.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 
+private const val DEFAULT_MARGIN = 50
+private const val MULTISELECT_MODE_MARGIN = 137
 
 class MyContactsFragment : Fragment() {
 
@@ -38,31 +40,37 @@ class MyContactsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         val viewModelFactory = ViewModelFactory(requireContext().applicationContext as App)
         viewModel = ViewModelProvider(this, viewModelFactory)[UsersListViewModel::class.java]
 
+        setupRecyclerView()
+        setupObservers()
+        setupListeners()
+        setupDialogFragmentListener()
+    }
+
+    private fun setupListeners() {
+        binding.addContactTextView.setOnClickListener {
+            showAddUserDialog()
+        }
+        binding.arrowBackImageView.setOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun setupObservers() {
+        viewModel.usersLiveData.observe(viewLifecycleOwner) {
+            adapter.submitList(it.toMutableList())
+        }
+    }
+
+    private fun setupRecyclerView() {
         adapter = UsersAdapter(object : UserActionListener {
+
             override fun onDeleteUser(user: User) {
                 val listBeforeDeletedContact = viewModel.usersLiveData.value
                 viewModel.deleteUser(user)
-
-                Snackbar.make(
-                    requireView(),
-                    getString(R.string.contact_has_been_removed),
-                    Snackbar.LENGTH_LONG
-                ).setAction(
-                    getString(R.string.cancel)
-                ) {
-                    viewModel.restoreUser(listBeforeDeletedContact)
-                }
-                    .setActionTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.my_light_primary
-                        )
-                    )
-                    .show()
+                showRestoreUserMessage(listBeforeDeletedContact)
             }
 
             override fun onUserDetails(user: User) {
@@ -80,55 +88,55 @@ class MyContactsFragment : Fragment() {
 
                 if (!viewModel.isAnyContactSelect()) {
                     adapter.isModeActive = false
-                    val layoutParams =
-                        binding.recyclerView.layoutParams as ViewGroup.MarginLayoutParams
-                    layoutParams.bottomMargin =
-                        (50 * binding.root.context.resources.displayMetrics.density).toInt()
-                    binding.recyclerView.layoutParams = layoutParams
+                    updateRecyclerViewMargin(DEFAULT_MARGIN)
                     binding.bucket.visibility = View.GONE
                 }
             }
 
             override fun onMultiSelectModeActive() {
-
-                var layoutParams =
-                    binding.recyclerView.layoutParams as ViewGroup.MarginLayoutParams
-                layoutParams.bottomMargin =
-                    (137 * binding.root.context.resources.displayMetrics.density).toInt()
-                binding.recyclerView.layoutParams = layoutParams
+                updateRecyclerViewMargin(MULTISELECT_MODE_MARGIN)
                 binding.bucket.visibility = View.VISIBLE
 
                 binding.bucket.setOnClickListener {
                     adapter.isModeActive = false
                     viewModel.deleteSelectedContacts()
-
-                    layoutParams =
-                        binding.recyclerView.layoutParams as ViewGroup.MarginLayoutParams
-                    layoutParams.bottomMargin =
-                        (50 * binding.root.context.resources.displayMetrics.density).toInt()
-                    binding.recyclerView.layoutParams = layoutParams
+                    updateRecyclerViewMargin(DEFAULT_MARGIN)
                     binding.bucket.visibility = View.GONE
                 }
-
             }
         })
 
         val layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter
+    }
 
-        viewModel.usersLiveData.observe(viewLifecycleOwner) {
-            adapter.submitList(it.toMutableList())
-        }
 
-        binding.addContactTextView.setOnClickListener {
-            showAddUserDialog()
-        }
-        setupDialogFragmentListener()
+    private fun updateRecyclerViewMargin(dp: Int) {
+        val layoutParams =
+            binding.recyclerView.layoutParams as ViewGroup.MarginLayoutParams
+        layoutParams.bottomMargin =
+            (dp * binding.root.context.resources.displayMetrics.density).toInt()
+        binding.recyclerView.layoutParams = layoutParams
+    }
 
-        binding.arrowBackImageView.setOnClickListener {
-            findNavController().popBackStack()
+    private fun showRestoreUserMessage(listBeforeDeletedContact: List<User>?) {
+        Snackbar.make(
+            requireView(),
+            getString(R.string.contact_has_been_removed),
+            Snackbar.LENGTH_LONG
+        ).setAction(
+            getString(R.string.cancel)
+        ) {
+            viewModel.restoreUser(listBeforeDeletedContact)
         }
+            .setActionTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.my_light_primary
+                )
+            )
+            .show()
     }
 
     private fun setupDialogFragmentListener() {

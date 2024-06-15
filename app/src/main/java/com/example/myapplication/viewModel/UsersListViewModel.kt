@@ -22,7 +22,6 @@ class UsersListViewModel(private val usersManager: UsersManager) : ViewModel() {
         }
     }
 
-
     fun deleteUser(user: User) {
         usersManager.deleteUser(user)
     }

@@ -25,13 +25,11 @@ class UsersManager {
 
     fun getUsers(): Flow<List<User>> = usersFlow
 
-
     fun deleteUser(user: User) {
         usersFlow.update { oldList ->
             oldList.filter { it.id != user.id }
         }
     }
-
 
     fun addUser(user: User) {
         user.photo = IMAGES[(id.rem(IMAGES.size)).toInt()]
@@ -40,7 +38,6 @@ class UsersManager {
             listOf(user) + oldList
         }
     }
-
 
     fun restoreUser(listWithDeletedUser: List<User>?) {
         usersFlow.update { listWithDeletedUser!! }
@@ -51,7 +48,6 @@ class UsersManager {
     }
 
     fun selectUser(user: User) {
-
         usersFlow.update { oldList ->
             oldList.map { existingUser ->
                 if (existingUser.id == user.id) {
