@@ -1,5 +1,6 @@
 package com.example.myapplication.viewModel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,7 +12,7 @@ import kotlinx.coroutines.launch
 class UsersListViewModel(private val usersManager: UsersManager) : ViewModel() {
 
     private val _usersLiveData = MutableLiveData<List<User>>()
-    val usersLiveData = _usersLiveData
+    val usersLiveData: LiveData<List<User>> = _usersLiveData
 
     init {
         viewModelScope.launch {

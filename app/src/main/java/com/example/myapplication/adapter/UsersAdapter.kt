@@ -24,8 +24,10 @@ class UsersAdapter(private val actionListener: UserActionListener) :
 
 
     override fun onClick(v: View) {
-        val user = v.tag as User
-        actionListener.onDeleteUser(user)
+        val user = v.tag as? User
+        if (user != null) {
+            actionListener.onDeleteUser(user)
+        }
     }
 
     class MyItemCallback : DiffUtil.ItemCallback<User>() {
