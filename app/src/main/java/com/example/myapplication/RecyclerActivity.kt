@@ -59,20 +59,21 @@ class RecyclerActivity : AppCompatActivity() {
         binding.addContactTextView.setOnClickListener {
             showAddUserDialog()
         }
+        setupDialogFragmentListener()
+    }
+
+    private fun setupDialogFragmentListener() {
+        AddUserDialogFragment.setDialogResListener(
+            supportFragmentManager,
+            this
+        ) { name, career ->
+            viewModel.addUser(User(name, career, "", 0L))
+            binding.recyclerView.smoothScrollToPosition(0)
+        }
     }
 
     private fun showAddUserDialog() {
-
-        val dialogFragment = AddUserDialogFragment(object : AddUserDialogListener {
-            override fun onDataEntered(data: Bundle) {
-                val userName = data.getString("userName")
-                val userCareer = data.getString("userCareer")
-                if (userCareer!!.isNotBlank() && userName!!.isNotBlank()) {
-                    viewModel.addUser(User(userName, userCareer, "", 0))
-                    binding.recyclerView.smoothScrollToPosition(0)
-                }
-            }
-        })
-        dialogFragment.show(supportFragmentManager, AddUserDialogFragment.TAG)
+        AddUserDialogFragment.show(supportFragmentManager, AddUserDialogFragment.TAG)
     }
+
 }
