@@ -1,39 +1,35 @@
 package com.example.myapplication.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.example.myapplication.R
 import com.example.myapplication.databinding.UserPatternBinding
+import com.example.myapplication.loadImage
 import com.example.myapplication.model.User
 
 
-interface UserActionListener {
-    fun onDeleteUser(user: User)
-    fun onUserDetails(user: User)
-}
-
 class UsersAdapter(private val actionListener: UserActionListener) :
-    ListAdapter<User, UsersAdapter.UsersViewHolder>(MyItemCallback()), View.OnClickListener {
+    ListAdapter<User, UsersAdapter.UsersViewHolder>(MyItemCallback()) {
 
 
-    class UsersViewHolder(val binding: UserPatternBinding) : RecyclerView.ViewHolder(binding.root)
+    class UsersViewHolder(
+        private val binding: UserPatternBinding, private val actionListener: UserActionListener
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun onBind(item: User) {
 
+            with(binding) {
+                userNameView.text = item.name
+                userCareerView.text = item.career
+                loadImage(userPhotoView, item.photo)
 
-    override fun onClick(v: View) {
-        val user = v.tag as User
-
-        when (v.id) {
-            R.id.deleteUserView -> {
-                actionListener.onDeleteUser(user)
-            }
-
-            else -> {
-                actionListener.onUserDetails(user)
+                itemView.setOnClickListener {
+                    actionListener.onUserDetails(item)
+                }
+                deleteUserView.setOnClickListener {
+                    actionListener.onDeleteUser(item)
+                }
             }
         }
     }
@@ -52,34 +48,11 @@ class UsersAdapter(private val actionListener: UserActionListener) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsersViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = UserPatternBinding.inflate(inflater, parent, false)
-        binding.deleteUserView.setOnClickListener(this)
-        binding.root.setOnClickListener(this)
-        return UsersViewHolder(binding)
+        return UsersViewHolder(binding, actionListener)
     }
 
     override fun onBindViewHolder(holder: UsersViewHolder, position: Int) {
         val user = getItem(position)
-        with(holder.binding) {
-
-            holder.itemView.tag = user
-            deleteUserView.tag = user
-            userNameView.text = user.name
-            userCareerView.text = user.career
-            if (user.photo.isNotBlank()) {
-                Glide.with(userPhotoView.context)
-                    .load(user.photo)
-                    .circleCrop()
-                    .placeholder(R.drawable.ic_default_photo)
-                    .error(R.drawable.ic_default_photo)
-                    .into(userPhotoView)
-            } else {
-                Glide.with(userPhotoView.context).clear(userPhotoView)
-                userPhotoView.setImageResource(R.drawable.ic_default_photo)
-            }
-        }
+        holder.onBind(user)
     }
 }
-
-
-
-
