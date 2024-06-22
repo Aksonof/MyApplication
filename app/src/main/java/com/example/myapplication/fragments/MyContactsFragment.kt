@@ -38,31 +38,37 @@ class MyContactsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         val viewModelFactory = ViewModelFactory(requireContext().applicationContext as App)
         viewModel = ViewModelProvider(this, viewModelFactory)[UsersListViewModel::class.java]
 
-        adapter = UsersAdapter(object : UserActionListener {
-            override fun onDeleteUser(user: User) {
-                val listBeforeDeletedContact = viewModel.usersLiveData.value
-                viewModel.deleteUser(user)
+        setupRecyclerView()
+        setupObservers()
+        setupListeners()
+        setupDialogFragmentListener()
+    }
 
-                Snackbar.make(
-                    requireView(),
-                    getString(R.string.contact_has_been_removed),
-                    Snackbar.LENGTH_LONG
-                ).setAction(
-                    getString(R.string.cancel)
-                ) {
-                    viewModel.restoreUser(listBeforeDeletedContact)
-                }
-                    .setActionTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.my_light_primary
-                        )
-                    )
-                    .show()
+    private fun setupListeners() {
+        binding.addContactTextView.setOnClickListener {
+            showAddUserDialog()
+        }
+        binding.arrowBackImageView.setOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun setupObservers() {
+        viewModel.usersLiveData.observe(viewLifecycleOwner) {
+            adapter.submitList(it.toMutableList())
+        }
+    }
+
+    private fun setupRecyclerView() {
+        adapter = UsersAdapter(object : UserActionListener {
+
+            override fun onDeleteUser(user: User) {
+                val listBeforeDeleted = viewModel.usersLiveData.value
+                viewModel.deleteUser(user)
+                showRestoreUserMessage(listBeforeDeleted)
             }
 
             override fun onUserDetails(user: User) {
@@ -75,23 +81,28 @@ class MyContactsFragment : Fragment() {
                 findNavController().navigate(action)
             }
         })
-
         val layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter
-        viewModel.usersLiveData.observe(viewLifecycleOwner) {
-            adapter.submitList(it.toMutableList())
-        }
+    }
 
-        binding.addContactTextView.setOnClickListener {
-            showAddUserDialog()
+    private fun showRestoreUserMessage(listBeforeDeleted: List<User>?) {
+        Snackbar.make(
+            requireView(),
+            getString(R.string.contact_has_been_removed),
+            Snackbar.LENGTH_LONG
+        ).setAction(
+            getString(R.string.cancel)
+        ) {
+            viewModel.restoreUser(listBeforeDeleted)
         }
-        setupDialogFragmentListener()
-
-        binding.arrowBackImageView.setOnClickListener {
-            findNavController().popBackStack()
-        }
-
+            .setActionTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.my_light_primary
+                )
+            )
+            .show()
     }
 
     private fun setupDialogFragmentListener() {
@@ -104,11 +115,9 @@ class MyContactsFragment : Fragment() {
         }
     }
 
-
     private fun showAddUserDialog() {
         AddUserDialogFragment.show(childFragmentManager, AddUserDialogFragment.TAG)
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
