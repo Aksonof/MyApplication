@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/myProfileFragment">
+
+    <fragment
+        android:id="@+id/myContactsFragment"
+        android:name="com.example.myapplication.fragments.MyContactsFragment"
+        android:label="fragment_my_contacts"
+        tools:layout="@layout/fragment_my_contacts">
+        <action
+            android:id="@+id/action_myContactsFragment_to_contactsProfileFragment"
+            app:destination="@id/contactsProfileFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <argument
+            android:name="userName"
+            android:defaultValue="Garry Earl"
+            app:argType="string" />
+        <argument
+            android:name="userCareer"
+            android:defaultValue="Engineer"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/contactsProfileFragment"
+        android:name="com.example.myapplication.fragments.ContactsProfileFragment"
+        android:label="fragment_contacts_profile"
+        tools:layout="@layout/fragment_contacts_profile">
+        <argument
+            android:name="userName"
+            android:defaultValue="Garry Earl"
+            app:argType="string" />
+        <argument
+            android:name="userCareer"
+            android:defaultValue="Engineer" />
+        <argument
+            android:name="userPhoto"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/myProfileFragment"
+        android:name="com.example.myapplication.fragments.MyProfileFragment"
+        android:label="MyProfileFragment">
+        <action
+            android:id="@+id/action_myProfileFragment_to_myContactsFragment"
+            app:destination="@id/myContactsFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+</navigation>
