@@ -87,7 +87,7 @@ class MyContactsFragment : Fragment() {
                 viewModel.selectUser(user)
 
                 if (!viewModel.isAnyContactSelect()) {
-                    adapter.isModeActive = false
+                    adapter.changeModeStatus(false)
                     updateRecyclerViewMargin(DEFAULT_MARGIN)
                     binding.bucket.visibility = View.GONE
                 }
@@ -98,7 +98,7 @@ class MyContactsFragment : Fragment() {
                 binding.bucket.visibility = View.VISIBLE
 
                 binding.bucket.setOnClickListener {
-                    adapter.isModeActive = false
+                    adapter.changeModeStatus(false)
                     viewModel.deleteSelectedContacts()
                     updateRecyclerViewMargin(DEFAULT_MARGIN)
                     binding.bucket.visibility = View.GONE
