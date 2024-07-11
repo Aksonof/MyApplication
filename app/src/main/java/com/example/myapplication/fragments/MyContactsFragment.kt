@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.App
 import com.example.myapplication.R
 import com.example.myapplication.adapter.UserActionListener
@@ -54,7 +55,8 @@ class MyContactsFragment : Fragment() {
             showAddUserDialog()
         }
         binding.arrowBackImageView.setOnClickListener {
-            findNavController().popBackStack()
+            val viewPager = activity?.findViewById<ViewPager2>(R.id.pager)
+            viewPager?.setCurrentItem(FIRST_TAB, true)
         }
     }
 

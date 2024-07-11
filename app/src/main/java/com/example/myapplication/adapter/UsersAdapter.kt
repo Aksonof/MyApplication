@@ -65,6 +65,9 @@ class UsersAdapter(private val actionListener: UserActionListener) :
                         actionListener.onUserDetails(item)
                     }
                 }
+                checkBox.setOnClickListener {
+                    actionListener.onSelectUser(item)
+                }
                 deleteUserView.setOnClickListener {
                     actionListener.onDeleteUser(item)
                 }
