@@ -9,12 +9,10 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.myapplication.databinding.FragmentViewPagerBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
-const val FIRST_TAB = 0
-const val SECOND_TAB = 1
-
+const val MY_PROFILE = 0
+const val MY_CONTACTS = 1
 
 class ViewPagerFragment : Fragment() {
-
 
     private var _binding: FragmentViewPagerBinding? = null
     private val binding
@@ -40,8 +38,8 @@ class ViewPagerFragment : Fragment() {
 
         TabLayoutMediator(binding.tabLayout, binding.pager) { tab, position ->
             when (position) {
-                FIRST_TAB -> tab.text = "My profile"
-                SECOND_TAB -> tab.text = "My contacts"
+                MY_PROFILE -> tab.text = "My profile"
+                MY_CONTACTS -> tab.text = "My contacts"
             }
         }.attach()
     }

@@ -29,7 +29,7 @@ class MyProfileFragment : Fragment() {
 
         binding.viewMyContactsButton.setOnClickListener {
             val viewPager = activity?.findViewById<ViewPager2>(R.id.pager)
-            viewPager?.setCurrentItem(SECOND_TAB, true)
+            viewPager?.setCurrentItem(MY_CONTACTS, true)
         }
     }
 

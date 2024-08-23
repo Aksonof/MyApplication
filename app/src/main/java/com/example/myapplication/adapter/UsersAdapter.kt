@@ -2,21 +2,21 @@ package com.example.myapplication.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.R
-import com.example.myapplication.databinding.UserPatternBinding
+import com.example.myapplication.databinding.ItemUserMultiselectBinding
+import com.example.myapplication.databinding.ItemUserNormalBinding
 import com.example.myapplication.loadImage
 import com.example.myapplication.model.User
 
-private const val DEFAULT_MARGIN = 8
-private const val MULTISELECT_MODE_MARGIN = 40
+
+private const val VIEW_TYPE_NORMAL = 0
+private const val VIEW_TYPE_MULTISELECT = 1
 
 class UsersAdapter(private val actionListener: UserActionListener) :
-    ListAdapter<User, UsersAdapter.UsersViewHolder>(MyItemCallback()) {
+    ListAdapter<User, RecyclerView.ViewHolder>(MyItemCallback()) {
 
     private var isModeActive: Boolean = false
 
@@ -26,29 +26,39 @@ class UsersAdapter(private val actionListener: UserActionListener) :
         notifyDataSetChanged()
     }
 
-    inner class UsersViewHolder(
-        private val binding: UserPatternBinding,
+    override fun getItemViewType(position: Int): Int {
+        return if (isModeActive) VIEW_TYPE_MULTISELECT else VIEW_TYPE_NORMAL
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return when (viewType) {
+            VIEW_TYPE_MULTISELECT -> {
+                val binding = ItemUserMultiselectBinding.inflate(inflater, parent, false)
+                MultiSelectViewHolder(binding)
+            }
+
+            else -> {
+                val binding = ItemUserNormalBinding.inflate(inflater, parent, false)
+                NormalViewHolder(binding)
+            }
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val user = getItem(position)
+        when (holder) {
+            is NormalViewHolder -> holder.onBind(user)
+            is MultiSelectViewHolder -> holder.onBind(user)
+        }
+    }
+
+    inner class NormalViewHolder(
+        private val binding: ItemUserNormalBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(item: User) {
-            val context = binding.root.context
-            val density = context.resources.displayMetrics.density
-
             with(binding) {
-                val layoutParams =
-                    userPhotoView.layoutParams as ViewGroup.MarginLayoutParams
-                root.setBackgroundResource(
-                    if (isModeActive) R.drawable.selected_user_background
-                    else R.drawable.item_background_selector
-                )
-                layoutParams.marginStart =
-                    if (isModeActive) (MULTISELECT_MODE_MARGIN * density).toInt()
-                    else (DEFAULT_MARGIN * density).toInt()
-                userPhotoView.layoutParams = layoutParams
-                deleteUserView.visibility = if (isModeActive) View.GONE else View.VISIBLE
-                checkBox.visibility = if (isModeActive) View.VISIBLE else View.GONE
-                checkBox.isChecked = item.isSelected
-
                 userNameView.text = item.name
                 userCareerView.text = item.career
 
@@ -59,14 +69,7 @@ class UsersAdapter(private val actionListener: UserActionListener) :
                     true
                 }
                 itemView.setOnClickListener {
-                    if (isModeActive) {
-                        actionListener.onSelectUser(item)
-                    } else {
-                        actionListener.onUserDetails(item)
-                    }
-                }
-                checkBox.setOnClickListener {
-                    actionListener.onSelectUser(item)
+                    actionListener.onUserDetails(item)
                 }
                 deleteUserView.setOnClickListener {
                     actionListener.onDeleteUser(item)
@@ -76,6 +79,28 @@ class UsersAdapter(private val actionListener: UserActionListener) :
         }
     }
 
+    inner class MultiSelectViewHolder(
+        private val binding: ItemUserMultiselectBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun onBind(item: User) {
+            with(binding) {
+                userNameView.text = item.name
+                userCareerView.text = item.career
+                checkBox.isChecked = item.isSelected
+
+                itemView.setOnClickListener {
+                    actionListener.onSelectUser(item)
+                }
+                checkBox.setOnClickListener {
+                    actionListener.onSelectUser(item)
+                }
+            }
+            loadImage(binding.userPhotoView, item.photo)
+        }
+    }
+
+
     class MyItemCallback : DiffUtil.ItemCallback<User>() {
         override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
             return oldItem.id == newItem.id
@@ -84,16 +109,5 @@ class UsersAdapter(private val actionListener: UserActionListener) :
         override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
             return oldItem == newItem
         }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsersViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding = UserPatternBinding.inflate(inflater, parent, false)
-        return UsersViewHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: UsersViewHolder, position: Int) {
-        val user = getItem(position)
-        holder.onBind(user)
     }
 }

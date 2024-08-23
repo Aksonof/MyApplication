@@ -73,7 +73,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolBarView" />
 
     <ImageView
-        android:id="@+id/bucket"
+        android:id="@+id/deleteUsersImageView"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginEnd="16dp"

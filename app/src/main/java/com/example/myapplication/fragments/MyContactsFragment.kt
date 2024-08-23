@@ -16,6 +16,7 @@ import com.example.myapplication.adapter.UserActionListener
 import com.example.myapplication.adapter.UsersAdapter
 import com.example.myapplication.databinding.FragmentMyContactsBinding
 import com.example.myapplication.model.User
+import com.example.myapplication.setVisibility
 import com.example.myapplication.viewModel.UsersListViewModel
 import com.example.myapplication.viewModel.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
@@ -56,7 +57,7 @@ class MyContactsFragment : Fragment() {
         }
         binding.arrowBackImageView.setOnClickListener {
             val viewPager = activity?.findViewById<ViewPager2>(R.id.pager)
-            viewPager?.setCurrentItem(FIRST_TAB, true)
+            viewPager?.setCurrentItem(MY_PROFILE, true)
         }
     }
 
@@ -91,19 +92,19 @@ class MyContactsFragment : Fragment() {
                 if (!viewModel.isAnyContactSelect()) {
                     adapter.changeModeStatus(false)
                     updateRecyclerViewMargin(DEFAULT_MARGIN)
-                    binding.bucket.visibility = View.GONE
+                    binding.deleteUsersImageView.setVisibility(false)
                 }
             }
 
             override fun onMultiSelectModeActive() {
                 updateRecyclerViewMargin(MULTISELECT_MODE_MARGIN)
-                binding.bucket.visibility = View.VISIBLE
+                binding.deleteUsersImageView.setVisibility(true)
 
-                binding.bucket.setOnClickListener {
+                binding.deleteUsersImageView.setOnClickListener {
                     adapter.changeModeStatus(false)
                     viewModel.deleteSelectedContacts()
                     updateRecyclerViewMargin(DEFAULT_MARGIN)
-                    binding.bucket.visibility = View.GONE
+                    binding.deleteUsersImageView.setVisibility(false)
                 }
             }
         })
@@ -147,10 +148,7 @@ class MyContactsFragment : Fragment() {
             viewLifecycleOwner
         ) { name, career ->
             viewModel.addUser(
-                User(
-                    name, career, "",
-                    ((viewModel.usersLiveData.value?.size)?.plus(1))!!.toLong(), false
-                )
+                name, career
             )
             binding.recyclerView.smoothScrollToPosition(0)
         }
