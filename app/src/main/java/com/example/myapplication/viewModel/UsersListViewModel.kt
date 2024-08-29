@@ -22,7 +22,6 @@ class UsersListViewModel(private val usersManager: UsersManager) : ViewModel() {
         }
     }
 
-
     fun deleteUser(user: User) {
         usersManager.deleteUser(user)
     }
@@ -31,8 +30,28 @@ class UsersListViewModel(private val usersManager: UsersManager) : ViewModel() {
         usersManager.restoreUser(listWithDeletedUser)
     }
 
-    fun addUser(user: User) {
-        usersManager.addUser(user)
+    fun addUser(name: String, career: String) {
+
+        val newUser = User(
+            name = name,
+            career = career,
+            photo = "",
+            id = System.currentTimeMillis(),
+            isSelected = false
+        )
+        usersManager.addUser(newUser)
+    }
+
+    fun selectUser(user: User) {
+        usersManager.selectUser(user)
+    }
+
+    fun isAnyContactSelect(): Boolean {
+        return usersManager.isAnyContactSelect()
+    }
+
+    fun deleteSelectedContacts() {
+        usersManager.deleteSelectedContacts()
     }
 
 }

@@ -9,16 +9,20 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.App
 import com.example.myapplication.R
 import com.example.myapplication.adapter.UserActionListener
 import com.example.myapplication.adapter.UsersAdapter
 import com.example.myapplication.databinding.FragmentMyContactsBinding
 import com.example.myapplication.model.User
+import com.example.myapplication.setVisibility
 import com.example.myapplication.viewModel.UsersListViewModel
 import com.example.myapplication.viewModel.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 
+private const val DEFAULT_MARGIN = 50
+private const val MULTISELECT_MODE_MARGIN = 137
 
 class MyContactsFragment : Fragment() {
 
@@ -52,7 +56,8 @@ class MyContactsFragment : Fragment() {
             showAddUserDialog()
         }
         binding.arrowBackImageView.setOnClickListener {
-            findNavController().popBackStack()
+            val viewPager = activity?.findViewById<ViewPager2>(R.id.pager)
+            viewPager?.setCurrentItem(MY_PROFILE, true)
         }
     }
 
@@ -66,27 +71,59 @@ class MyContactsFragment : Fragment() {
         adapter = UsersAdapter(object : UserActionListener {
 
             override fun onDeleteUser(user: User) {
-                val listBeforeDeleted = viewModel.usersLiveData.value
+                val listBeforeDeletedContact = viewModel.usersLiveData.value
                 viewModel.deleteUser(user)
-                showRestoreUserMessage(listBeforeDeleted)
+                showRestoreUserMessage(listBeforeDeletedContact)
             }
 
             override fun onUserDetails(user: User) {
                 val action =
-                    MyContactsFragmentDirections.actionMyContactsFragmentToContactsProfileFragment(
+                    ViewPagerFragmentDirections.actionViewPagerFragmentToContactsProfileFragment(
                         user.photo,
                         user.name,
                         user.career
                     )
                 findNavController().navigate(action)
             }
+
+            override fun onSelectUser(user: User) {
+                viewModel.selectUser(user)
+
+                if (!viewModel.isAnyContactSelect()) {
+                    adapter.changeModeStatus(false)
+                    updateRecyclerViewMargin(DEFAULT_MARGIN)
+                    binding.deleteUsersImageView.setVisibility(false)
+                }
+            }
+
+            override fun onMultiSelectModeActive() {
+                updateRecyclerViewMargin(MULTISELECT_MODE_MARGIN)
+                binding.deleteUsersImageView.setVisibility(true)
+
+                binding.deleteUsersImageView.setOnClickListener {
+                    adapter.changeModeStatus(false)
+                    viewModel.deleteSelectedContacts()
+                    updateRecyclerViewMargin(DEFAULT_MARGIN)
+                    binding.deleteUsersImageView.setVisibility(false)
+                }
+            }
         })
+
         val layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter
     }
 
-    private fun showRestoreUserMessage(listBeforeDeleted: List<User>?) {
+
+    private fun updateRecyclerViewMargin(dp: Int) {
+        val layoutParams =
+            binding.recyclerView.layoutParams as ViewGroup.MarginLayoutParams
+        layoutParams.bottomMargin =
+            (dp * binding.root.context.resources.displayMetrics.density).toInt()
+        binding.recyclerView.layoutParams = layoutParams
+    }
+
+    private fun showRestoreUserMessage(listBeforeDeletedContact: List<User>?) {
         Snackbar.make(
             requireView(),
             getString(R.string.contact_has_been_removed),
@@ -94,7 +131,7 @@ class MyContactsFragment : Fragment() {
         ).setAction(
             getString(R.string.cancel)
         ) {
-            viewModel.restoreUser(listBeforeDeleted)
+            viewModel.restoreUser(listBeforeDeletedContact)
         }
             .setActionTextColor(
                 ContextCompat.getColor(
@@ -110,7 +147,9 @@ class MyContactsFragment : Fragment() {
             childFragmentManager,
             viewLifecycleOwner
         ) { name, career ->
-            viewModel.addUser(User(name, career, "", 0L))
+            viewModel.addUser(
+                name, career
+            )
             binding.recyclerView.smoothScrollToPosition(0)
         }
     }

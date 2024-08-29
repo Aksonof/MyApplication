@@ -12,18 +12,18 @@ class UsersManager {
     private var id: Long = SIZE.toLong()
 
     private val usersFlow = MutableStateFlow(
-        List(SIZE) { index -> randomUser(id = index + 1L) }
+        List(SIZE) { index -> randomUser(index + 1L) }
     )
 
     private fun randomUser(id: Long): User = User(
         name = faker.dune().character(),
         career = faker.job().title(),
         photo = IMAGES[(id.rem(IMAGES.size)).toInt()],
-        id = id
+        id = id,
+        isSelected = false
     )
 
     fun getUsers(): Flow<List<User>> = usersFlow
-
 
     fun deleteUser(user: User) {
         usersFlow.update { oldList ->
@@ -31,18 +31,38 @@ class UsersManager {
         }
     }
 
-
     fun addUser(user: User) {
-        user.id = ++id
         user.photo = IMAGES[(id.rem(IMAGES.size)).toInt()]
+
         usersFlow.update { oldList ->
             listOf(user) + oldList
         }
     }
 
-
     fun restoreUser(listWithDeletedUser: List<User>?) {
         usersFlow.update { listWithDeletedUser!! }
+    }
+
+    fun isAnyContactSelect(): Boolean {
+        return usersFlow.value.any { it.isSelected }
+    }
+
+    fun selectUser(user: User) {
+        usersFlow.update { oldList ->
+            oldList.map { existingUser ->
+                if (existingUser.id == user.id) {
+                    existingUser.copy(isSelected = !existingUser.isSelected)
+                } else {
+                    existingUser
+                }
+            }
+        }
+    }
+
+    fun deleteSelectedContacts() {
+        usersFlow.update { oldList ->
+            oldList.filterNot { it.isSelected }
+        }
     }
 
     companion object {

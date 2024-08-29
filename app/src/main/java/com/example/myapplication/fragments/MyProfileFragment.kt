@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentMyProfileBinding
 
@@ -26,8 +26,10 @@ class MyProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.viewMyContactsButton.setOnClickListener {
-            findNavController().navigate(R.id.action_myProfileFragment_to_myContactsFragment)
+            val viewPager = activity?.findViewById<ViewPager2>(R.id.pager)
+            viewPager?.setCurrentItem(MY_CONTACTS, true)
         }
     }
 

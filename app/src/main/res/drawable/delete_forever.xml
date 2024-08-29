@@ -1,0 +1,22 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="60dp"
+    android:height="60dp"
+    android:viewportWidth="60"
+    android:viewportHeight="60">
+
+    <!-- Orange Circle Background -->
+    <path
+        android:fillColor="#FB5E06"
+        android:pathData="M30,0A30,30 0,1 0 30,60A30,30 0,1 0 30,0Z" />
+
+    <!-- White Bin Icon -->
+    <group
+        android:scaleX="0.03125"
+        android:scaleY="0.03125"
+        android:translateX="15"
+        android:translateY="15">
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M376,660L480,556L584,660L640,604L536,500L640,396L584,340L480,444L376,340L320,396L424,500L320,604L376,660ZM280,840Q247,840 223.5,816.5Q200,793 200,760L200,240L160,240L160,160L360,160L360,120L600,120L600,160L800,160L800,240L760,240L760,760Q760,793 736.5,816.5Q713,840 680,840L280,840ZM680,240L280,240L280,760Q280,760 280,760Q280,760 280,760L680,760Q680,760 680,760Q680,760 680,760L680,240ZM280,240L280,240L280,760Q280,760 280,760Q280,760 280,760L280,760Q280,760 280,760Q280,760 280,760L280,240Z" />
+    </group>
+</vector>

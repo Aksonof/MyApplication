@@ -10,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentContactsProfileBinding
+import com.example.myapplication.loadImage
 
 class ContactsProfileFragment : Fragment() {
 
@@ -34,12 +35,7 @@ class ContactsProfileFragment : Fragment() {
 
         binding.nameTextView.text = args.userName
         binding.careerTextView.text = args.userCareer
-        Glide.with(binding.userPhotoView.context)
-            .load(args.userPhoto)
-            .circleCrop()
-            .placeholder(R.drawable.ic_default_photo)
-            .error(R.drawable.ic_default_photo)
-            .into(binding.userPhotoView)
+        loadImage(binding.userPhotoView, args.userPhoto)
         binding.arrowBackImageView.setOnClickListener {
             findNavController().popBackStack()
         }
