@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/viewPagerFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/viewPagerFragment"
@@ -27,6 +27,36 @@
         <argument
             android:name="userPhoto"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.myapplication.fragments.LogInFragment"
+        android:label="LoginFragment">
+        <action
+            android:id="@+id/action_loginFragment_to_viewPagerFragment"
+            app:destination="@id/viewPagerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.myapplication.fragments.SignUpFragment"
+        android:label="SignUpFragment">
+        <action
+            android:id="@+id/action_signUpFragment_to_viewPagerFragment"
+            app:destination="@id/viewPagerFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_signUpExtendedFragment"
+            app:destination="@id/signUpExtendedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpExtendedFragment"
+        android:name="com.example.myapplication.fragments.SignUpExtendedFragment"
+        android:label="SignUpExtendedFragment">
+        <action
+            android:id="@+id/action_signUpExtendedFragment_to_viewPagerFragment"
+            app:destination="@id/viewPagerFragment" />
     </fragment>
 
 </navigation>

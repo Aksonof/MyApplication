@@ -143,7 +143,7 @@ class MyContactsFragment : Fragment() {
     }
 
     private fun setupDialogFragmentListener() {
-        AddUserDialogFragment.setDialogResListener(
+        AddUserDialogFragment.setDialogResultListener(
             childFragmentManager,
             viewLifecycleOwner
         ) { name, career ->

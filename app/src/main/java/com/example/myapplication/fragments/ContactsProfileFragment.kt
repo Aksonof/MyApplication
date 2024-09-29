@@ -36,6 +36,7 @@ class ContactsProfileFragment : Fragment() {
         binding.nameTextView.text = args.userName
         binding.careerTextView.text = args.userCareer
         loadImage(binding.userPhotoView, args.userPhoto)
+
         binding.arrowBackImageView.setOnClickListener {
             findNavController().popBackStack()
         }

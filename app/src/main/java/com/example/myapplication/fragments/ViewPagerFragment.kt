@@ -30,6 +30,7 @@ class ViewPagerFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         viewPagerAdapter = ViewPagerAdapter(this)
         viewPagerAdapter.addFragment(MyProfileFragment())
         viewPagerAdapter.addFragment(MyContactsFragment())

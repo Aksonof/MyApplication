@@ -8,9 +8,11 @@
     <color name="gray_text">#18181F</color>
     <color name="orange">#FB5E06</color>
     <color name="royal_blue">#4682B4</color>
+    <color name="error">#F93E3E</color>
 
-    <color name="my_light_background">#FFFFFFFF</color>
-    <color name="my_light_primary">#008080</color>
+    <color name="my_light_background">#242235</color>
+    <color name="my_light_primary">#B2B2B3</color>
+
     <color name="my_light_text_primary">#FFFFFFFF</color>
     <color name="my_light_text_secondary">#B2B2B3</color>
 

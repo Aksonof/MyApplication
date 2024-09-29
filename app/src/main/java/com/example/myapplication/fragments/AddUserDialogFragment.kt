@@ -63,7 +63,7 @@ class AddUserDialogFragment : DialogFragment() {
             dialogFragment.show(manager, tag)
         }
 
-        fun setDialogResListener(
+        fun setDialogResultListener(
             manager: FragmentManager,
             lifecycleOwner: LifecycleOwner,
             listener: (name: String, career: String) -> Unit
