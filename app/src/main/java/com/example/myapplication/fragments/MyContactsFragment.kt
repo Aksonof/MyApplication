@@ -12,12 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.App
 import com.example.myapplication.R
-import com.example.myapplication.adapter.UserActionListener
-import com.example.myapplication.adapter.UsersAdapter
+import com.example.myapplication.adapter.ContactActionListener
+import com.example.myapplication.adapter.ContactsAdapter
 import com.example.myapplication.databinding.FragmentMyContactsBinding
-import com.example.myapplication.model.User
+import com.example.myapplication.model.Contact
 import com.example.myapplication.setVisibility
-import com.example.myapplication.viewModel.UsersListViewModel
+import com.example.myapplication.viewModel.ContactsViewModel
 import com.example.myapplication.viewModel.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 
@@ -28,8 +28,8 @@ class MyContactsFragment : Fragment() {
 
     private var _binding: FragmentMyContactsBinding? = null
     private val binding get() = _binding!!
-    private lateinit var adapter: UsersAdapter
-    private lateinit var viewModel: UsersListViewModel
+    private lateinit var adapter: ContactsAdapter
+    private lateinit var viewModel: ContactsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +43,7 @@ class MyContactsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val viewModelFactory = ViewModelFactory(requireContext().applicationContext as App)
-        viewModel = ViewModelProvider(this, viewModelFactory)[UsersListViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[ContactsViewModel::class.java]
 
         setupRecyclerView()
         setupObservers()
@@ -68,26 +68,26 @@ class MyContactsFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = UsersAdapter(object : UserActionListener {
+        adapter = ContactsAdapter(object : ContactActionListener {
 
-            override fun onDeleteUser(user: User) {
+            override fun onDeleteUser(contact: Contact) {
                 val listBeforeDeletedContact = viewModel.usersLiveData.value
-                viewModel.deleteUser(user)
+                viewModel.deleteUser(contact)
                 showRestoreUserMessage(listBeforeDeletedContact)
             }
 
-            override fun onUserDetails(user: User) {
+            override fun onUserDetails(contact: Contact) {
                 val action =
                     ViewPagerFragmentDirections.actionViewPagerFragmentToContactsProfileFragment(
-                        user.photo,
-                        user.name,
-                        user.career
+                        contact.photo,
+                        contact.name,
+                        contact.career
                     )
                 findNavController().navigate(action)
             }
 
-            override fun onSelectUser(user: User) {
-                viewModel.selectUser(user)
+            override fun onSelectUser(contact: Contact) {
+                viewModel.selectUser(contact)
 
                 if (!viewModel.isAnyContactSelect()) {
                     adapter.changeModeStatus(false)
@@ -123,7 +123,7 @@ class MyContactsFragment : Fragment() {
         binding.recyclerView.layoutParams = layoutParams
     }
 
-    private fun showRestoreUserMessage(listBeforeDeletedContact: List<User>?) {
+    private fun showRestoreUserMessage(listBeforeDeletedContact: List<Contact>?) {
         Snackbar.make(
             requireView(),
             getString(R.string.contact_has_been_removed),

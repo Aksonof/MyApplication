@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 
 
-class UsersManager {
+class ContactRepository {
 
     private val faker: Faker = Faker.instance()
     private var id: Long = SIZE.toLong()
@@ -15,7 +15,7 @@ class UsersManager {
         List(SIZE) { index -> randomUser(index + 1L) }
     )
 
-    private fun randomUser(id: Long): User = User(
+    private fun randomUser(id: Long): Contact = Contact(
         name = faker.dune().character(),
         career = faker.job().title(),
         photo = IMAGES[(id.rem(IMAGES.size)).toInt()],
@@ -23,34 +23,34 @@ class UsersManager {
         isSelected = false
     )
 
-    fun getUsers(): Flow<List<User>> = usersFlow
+    fun getUsers(): Flow<List<Contact>> = usersFlow
 
-    fun deleteUser(user: User) {
+    fun deleteUser(contact: Contact) {
         usersFlow.update { oldList ->
-            oldList.filter { it.id != user.id }
+            oldList.filter { it.id != contact.id }
         }
     }
 
-    fun addUser(user: User) {
-        user.photo = IMAGES[(id.rem(IMAGES.size)).toInt()]
+    fun addUser(contact: Contact) {
+        contact.photo = IMAGES[(id.rem(IMAGES.size)).toInt()]
 
         usersFlow.update { oldList ->
-            listOf(user) + oldList
+            listOf(contact) + oldList
         }
     }
 
-    fun restoreUser(listWithDeletedUser: List<User>?) {
-        usersFlow.update { listWithDeletedUser!! }
+    fun restoreUser(listWithDeletedContact: List<Contact>?) {
+        usersFlow.update { listWithDeletedContact!! }
     }
 
     fun isAnyContactSelect(): Boolean {
         return usersFlow.value.any { it.isSelected }
     }
 
-    fun selectUser(user: User) {
+    fun selectUser(contact: Contact) {
         usersFlow.update { oldList ->
             oldList.map { existingUser ->
-                if (existingUser.id == user.id) {
+                if (existingUser.id == contact.id) {
                     existingUser.copy(isSelected = !existingUser.isSelected)
                 } else {
                     existingUser

@@ -7,7 +7,7 @@ import com.example.myapplication.App
 class ViewModelFactory(private val app: App) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return UsersListViewModel(app.usersManager) as T
+        return ContactsViewModel(app.contactRepository) as T
     }
 
 }

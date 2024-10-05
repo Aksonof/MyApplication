@@ -6,17 +6,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.databinding.ItemUserMultiselectBinding
-import com.example.myapplication.databinding.ItemUserNormalBinding
+import com.example.myapplication.databinding.ItemContactMultiselectBinding
+import com.example.myapplication.databinding.ItemContactNormalBinding
 import com.example.myapplication.loadImage
-import com.example.myapplication.model.User
+import com.example.myapplication.model.Contact
 
 
 private const val VIEW_TYPE_NORMAL = 0
 private const val VIEW_TYPE_MULTISELECT = 1
 
-class UsersAdapter(private val actionListener: UserActionListener) :
-    ListAdapter<User, RecyclerView.ViewHolder>(MyItemCallback()) {
+class ContactsAdapter(private val actionListener: ContactActionListener) :
+    ListAdapter<Contact, RecyclerView.ViewHolder>(MyItemCallback()) {
 
     private var isModeActive: Boolean = false
 
@@ -34,12 +34,12 @@ class UsersAdapter(private val actionListener: UserActionListener) :
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             VIEW_TYPE_MULTISELECT -> {
-                val binding = ItemUserMultiselectBinding.inflate(inflater, parent, false)
+                val binding = ItemContactMultiselectBinding.inflate(inflater, parent, false)
                 MultiSelectViewHolder(binding)
             }
 
             else -> {
-                val binding = ItemUserNormalBinding.inflate(inflater, parent, false)
+                val binding = ItemContactNormalBinding.inflate(inflater, parent, false)
                 NormalViewHolder(binding)
             }
         }
@@ -54,10 +54,10 @@ class UsersAdapter(private val actionListener: UserActionListener) :
     }
 
     inner class NormalViewHolder(
-        private val binding: ItemUserNormalBinding
+        private val binding: ItemContactNormalBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(item: User) {
+        fun onBind(item: Contact) {
             with(binding) {
                 userNameView.text = item.name
                 userCareerView.text = item.career
@@ -80,10 +80,10 @@ class UsersAdapter(private val actionListener: UserActionListener) :
     }
 
     inner class MultiSelectViewHolder(
-        private val binding: ItemUserMultiselectBinding
+        private val binding: ItemContactMultiselectBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(item: User) {
+        fun onBind(item: Contact) {
             with(binding) {
                 userNameView.text = item.name
                 userCareerView.text = item.career
@@ -101,12 +101,12 @@ class UsersAdapter(private val actionListener: UserActionListener) :
     }
 
 
-    class MyItemCallback : DiffUtil.ItemCallback<User>() {
-        override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
+    class MyItemCallback : DiffUtil.ItemCallback<Contact>() {
+        override fun areItemsTheSame(oldItem: Contact, newItem: Contact): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
+        override fun areContentsTheSame(oldItem: Contact, newItem: Contact): Boolean {
             return oldItem == newItem
         }
     }
