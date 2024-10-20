@@ -17,7 +17,6 @@ data class User(
 data class RegisterResponse(
     val status: String,
     val code: Int,
-    val message: String?,
     val data: UserData
 )
 

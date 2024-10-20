@@ -18,7 +18,7 @@ import com.example.myapplication.databinding.FragmentMyContactsBinding
 import com.example.myapplication.model.Contact
 import com.example.myapplication.setVisibility
 import com.example.myapplication.viewModel.ContactsViewModel
-import com.example.myapplication.viewModel.ViewModelFactory
+import com.example.myapplication.viewModel.ContactsViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 
 private const val DEFAULT_MARGIN = 50
@@ -42,8 +42,8 @@ class MyContactsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val viewModelFactory = ViewModelFactory(requireContext().applicationContext as App)
-        viewModel = ViewModelProvider(this, viewModelFactory)[ContactsViewModel::class.java]
+        val contactsViewModelFactory = ContactsViewModelFactory(requireContext().applicationContext as App)
+        viewModel = ViewModelProvider(this, contactsViewModelFactory)[ContactsViewModel::class.java]
 
         setupRecyclerView()
         setupObservers()
