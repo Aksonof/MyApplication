@@ -1,5 +1,6 @@
 package com.example.myapplication.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -70,6 +71,11 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
 
             if (response.isSuccessful) {
                 val registerResponse = response.body()
+                Log.e(
+                    "Sus",
+                    "Message: ${registerResponse?.code.toString()},${registerResponse?.status}, " +
+                            "${registerResponse?.data?.user?.email}"
+                )
 
                 registerResponse?.let {
                     _registerState.value = Result.success(it)
