@@ -1,6 +1,5 @@
 package com.example.myapplication.viewModel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,7 +14,10 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
-class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
+class UserViewModel(
+    private val userRepository: UserRepository,
+    private val sessionManager: SessionManager
+) : ViewModel() {
 
     private val _registerState = MutableLiveData<Result<RegisterResponse>>()
     val registerState: LiveData<Result<RegisterResponse>> get() = _registerState
@@ -71,11 +73,7 @@ class UserViewModel(private val userRepository: UserRepository) : ViewModel() {
 
             if (response.isSuccessful) {
                 val registerResponse = response.body()
-                Log.e(
-                    "Sus",
-                    "Message: ${registerResponse?.code.toString()},${registerResponse?.status}, " +
-                            "${registerResponse?.data?.user?.email}"
-                )
+
 
                 registerResponse?.let {
                     _registerState.value = Result.success(it)
