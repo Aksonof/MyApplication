@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.model.RegisterResponse
 import com.example.myapplication.model.UserRepository
+import dagger.hilt.android.HiltAndroidApp
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -13,15 +15,16 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
+import javax.inject.Inject
 
-class UserViewModel(
+@HiltViewModel
+class UserViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val sessionManager: SessionManager
-) : ViewModel() {
+): ViewModel() {
 
     private val _registerState = MutableLiveData<Result<RegisterResponse>>()
     val registerState: LiveData<Result<RegisterResponse>> get() = _registerState
-
 
     fun registerUser(
         email: String,

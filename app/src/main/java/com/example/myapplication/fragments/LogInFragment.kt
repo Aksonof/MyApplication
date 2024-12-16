@@ -7,21 +7,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.myapplication.App
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentLogInBinding
 import com.example.myapplication.viewModel.UserViewModel
-import com.example.myapplication.viewModel.UserViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LogInFragment : Fragment() {
 
-
-    private val userViewModel: UserViewModel by viewModels {
-        UserViewModelFactory(
-            (requireActivity().application as App).userRepository,
-            (requireActivity().application as App).sessionManager
-        )
-    }
+    private val userViewModel: UserViewModel by viewModels()
     private var _binding: FragmentLogInBinding? = null
     private val binding get() = _binding!!
 
