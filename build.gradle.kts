@@ -8,6 +8,8 @@ buildscript {
     }
     dependencies {
         classpath(libs.navigation.safe.args.gradle.plugin)
+        classpath (libs.hilt.android.gradle.plugin)
+
     }
 
 }
