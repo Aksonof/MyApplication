@@ -1,7 +1,6 @@
 package com.example.myapplication.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,10 +52,15 @@ class SignUpFragment : Fragment() {
 
         userViewModel.registerState.observe(viewLifecycleOwner) { result ->
             result.onSuccess {
-                Toast.makeText(requireContext(), "Registration successful!", Toast.LENGTH_SHORT)
+                Toast.makeText(requireContext(), "Registration successful!", Toast.LENGTH_LONG)
                     .show()
             }.onFailure { error ->
-                Log.e("SignUpError", "Code: ${error.cause}, Message: ${error.message}")
+                Toast.makeText(
+                    requireContext(),
+                    "Register failure: ${error.message}",
+                    Toast.LENGTH_LONG
+                )
+                    .show()
             }
         }
     }

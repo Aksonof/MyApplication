@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.model.RegisterResponse
 import com.example.myapplication.model.UserRepository
-import dagger.hilt.android.HiltAndroidApp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -14,6 +13,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import retrofit2.Response
 import java.io.File
 import javax.inject.Inject
 
@@ -25,6 +25,21 @@ class UserViewModel @Inject constructor(
 
     private val _registerState = MutableLiveData<Result<RegisterResponse>>()
     val registerState: LiveData<Result<RegisterResponse>> get() = _registerState
+
+    fun loginUser(
+        email: String,
+        password: String
+    ) = viewModelScope.launch {
+        try {
+            val emailRequestBody = createRequestBody(email)
+            val passwordRequestBody = createRequestBody(password)
+            val response = userRepository.loginUser(emailRequestBody, passwordRequestBody)
+            processResponse(response)
+        } catch (e: Exception) {
+            _registerState.value = Result.failure(e)
+        }
+
+    }
 
     fun registerUser(
         email: String,
@@ -40,7 +55,6 @@ class UserViewModel @Inject constructor(
         linkedin: String?,
         image: File?
     ) = viewModelScope.launch {
-
         try {
             val emailRequestBody = createRequestBody(email)
             val passwordRequestBody = createRequestBody(password)
@@ -73,23 +87,24 @@ class UserViewModel @Inject constructor(
                 linkedinRequestBody,
                 imagePart
             )
-
-            if (response.isSuccessful) {
-                val registerResponse = response.body()
-
-
-                registerResponse?.let {
-                    _registerState.value = Result.success(it)
-                } ?: run {
-                    _registerState.value = Result.failure(Exception("Response body is null"))
-                }
-            } else {
-                _registerState.value =
-                    Result.failure(Exception("Registration failed: ${response.code()}"))
-            }
-
+            processResponse(response)
         } catch (e: Exception) {
             _registerState.value = Result.failure(e)
+        }
+    }
+
+    private fun processResponse(response: Response<RegisterResponse>) {
+        if (response.isSuccessful) {
+            val registerResponse = response.body()
+
+            registerResponse?.let {
+                _registerState.value = Result.success(it)
+            } ?: run {
+                _registerState.value = Result.failure(Exception("Response body is null"))
+            }
+        } else {
+            _registerState.value =
+                Result.failure(Exception("Registration failed: ${response.code()}"))
         }
     }
 

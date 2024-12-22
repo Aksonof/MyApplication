@@ -26,4 +26,12 @@ class UserRepository(private val apiService: ApiService) {
         )
     }
 
+
+    suspend fun loginUser(
+        email: RequestBody,
+        password: RequestBody
+    ): Response<RegisterResponse> {
+        return apiService.loginUser(email, password)
+    }
+
 }

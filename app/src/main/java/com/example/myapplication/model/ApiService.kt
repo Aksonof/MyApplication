@@ -3,7 +3,9 @@ package com.example.myapplication.model
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.Multipart
+import retrofit2.http.POST
+import retrofit2.http.Part
 
 interface ApiService {
     @Multipart
@@ -23,5 +25,11 @@ interface ApiService {
         @Part image: MultipartBody.Part? = null
     ): Response<RegisterResponse>
 
+    @Multipart
+    @POST("login")
+    suspend fun loginUser(
+        @Part("email") email: RequestBody,
+        @Part("password") password: RequestBody
+    ): Response<RegisterResponse>
 
 }
