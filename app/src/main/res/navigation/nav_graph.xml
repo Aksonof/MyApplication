@@ -8,6 +8,7 @@
         android:id="@+id/viewPagerFragment"
         android:name="com.example.myapplication.fragments.ViewPagerFragment"
         android:label="ViewPagerFragment">
+
         <action
             android:id="@+id/action_viewPagerFragment_to_contactsProfileFragment"
             app:destination="@id/contactsProfileFragment"
@@ -15,6 +16,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <argument
+            android:name="user"
+            app:argType="com.example.myapplication.model.User" />
     </fragment>
 
     <fragment

@@ -31,6 +31,7 @@ class MyProfileFragment : Fragment() {
             val viewPager = activity?.findViewById<ViewPager2>(R.id.pager)
             viewPager?.setCurrentItem(MY_CONTACTS, true)
         }
+
     }
 
     override fun onDestroyView() {

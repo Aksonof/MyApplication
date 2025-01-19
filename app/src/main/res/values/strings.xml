@@ -65,5 +65,7 @@
     <string name="login" translatable="false">Login</string>
     <string name="sign_up" translatable="false">Sign up</string>
     <string name="don_t_have_account" translatable="false">Don’t have account?</string>
+    <string name="add">Add</string>
+    <string name="recommendation">Recommendation</string>
 
 </resources>

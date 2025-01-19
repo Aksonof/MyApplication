@@ -56,6 +56,8 @@
     <string name="career">Модель</string>
     <string name="default_address">Нижній Вал,12</string>
     <string name="message">Повідомлення</string>
+    <string name="add">Додати</string>
+    <string name="recommendation">Рекомендації</string>
 
 
 </resources>

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.model.RegisterResponse
+import com.example.myapplication.model.User
 import com.example.myapplication.model.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -26,6 +27,15 @@ class UserViewModel @Inject constructor(
     private val _registerState = MutableLiveData<Result<RegisterResponse>>()
     val registerState: LiveData<Result<RegisterResponse>> get() = _registerState
 
+    private val _user = MutableLiveData<User>()
+    val user: LiveData<User> get() = _user
+
+    private val _allContactsLiveData = MutableLiveData<List<User>>()
+    val allContactsLiveData: LiveData<List<User>> = _allContactsLiveData
+
+    private val _addedContacts = MutableLiveData<List<User>>()
+    val addedContacts: MutableLiveData<List<User>> = _addedContacts
+
     fun loginUser(
         email: String,
         password: String
@@ -35,10 +45,10 @@ class UserViewModel @Inject constructor(
             val passwordRequestBody = createRequestBody(password)
             val response = userRepository.loginUser(emailRequestBody, passwordRequestBody)
             processResponse(response)
+
         } catch (e: Exception) {
             _registerState.value = Result.failure(e)
         }
-
     }
 
     fun registerUser(
@@ -56,36 +66,22 @@ class UserViewModel @Inject constructor(
         image: File?
     ) = viewModelScope.launch {
         try {
-            val emailRequestBody = createRequestBody(email)
-            val passwordRequestBody = createRequestBody(password)
-            val nameRequestBody = createRequestBody(name ?: "")
-            val phoneRequestBody = createRequestBody(phone ?: "")
-            val addressRequestBody = createRequestBody(address ?: "")
-            val careerRequestBody = createRequestBody(career ?: "")
-            val birthdayRequestBody = createRequestBody(birthday ?: "")
-            val facebookRequestBody = createRequestBody(facebook ?: "")
-            val instagramRequestBody = createRequestBody(instagram ?: "")
-            val twitterRequestBody = createRequestBody(twitter ?: "")
-            val linkedinRequestBody = createRequestBody(linkedin ?: "")
-
-            val imagePart = image?.let {
-                val requestFile = it.asRequestBody("image/jpeg".toMediaTypeOrNull())
-                MultipartBody.Part.createFormData("image", it.name, requestFile)
-            }
-
             val response = userRepository.registerUser(
-                emailRequestBody,
-                passwordRequestBody,
-                nameRequestBody,
-                phoneRequestBody,
-                addressRequestBody,
-                careerRequestBody,
-                birthdayRequestBody,
-                facebookRequestBody,
-                instagramRequestBody,
-                twitterRequestBody,
-                linkedinRequestBody,
-                imagePart
+                createRequestBody(email),
+                createRequestBody(password),
+                createRequestBody(name ?: ""),
+                createRequestBody(phone ?: ""),
+                createRequestBody(address ?: ""),
+                createRequestBody(career ?: ""),
+                createRequestBody(birthday ?: ""),
+                createRequestBody(facebook ?: ""),
+                createRequestBody(instagram ?: ""),
+                createRequestBody(twitter ?: ""),
+                createRequestBody(linkedin ?: ""),
+                image?.let {
+                    val requestFile = it.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                    MultipartBody.Part.createFormData("image", it.name, requestFile)
+                }
             )
             processResponse(response)
         } catch (e: Exception) {
@@ -99,6 +95,9 @@ class UserViewModel @Inject constructor(
 
             registerResponse?.let {
                 _registerState.value = Result.success(it)
+                _user.value = it.data.user
+
+                sessionManager.saveTokens(it.data.accessToken, it.data.refreshToken)
             } ?: run {
                 _registerState.value = Result.failure(Exception("Response body is null"))
             }
@@ -111,4 +110,24 @@ class UserViewModel @Inject constructor(
     private fun createRequestBody(value: String): RequestBody {
         return value.toRequestBody("text/plain".toMediaTypeOrNull())
     }
+
+
+    fun getAllContacts(authHeader: String) = viewModelScope.launch {
+        val response = userRepository.getAllUsers(authHeader)
+        if (response.isSuccessful) {
+            _allContactsLiveData.value = response.body()?.data
+        }
+    }
+
+    fun getAddedContacts(authHeader: String, userId: String) = viewModelScope.launch {
+        val response = userRepository.getUserContacts(authHeader, userId)
+        if (response.isSuccessful) {
+            _addedContacts.value = response.body()?.data
+        }
+    }
+
+    fun isContactAdded(contact: User): Boolean {
+        return _addedContacts.value?.any { it.email == contact.email } == true
+    }
+
 }

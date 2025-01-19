@@ -56,6 +56,14 @@ class LogInFragment : Fragment() {
                     .show()
             }
         }
+
+
+        userViewModel.user.observe(viewLifecycleOwner) { user ->
+            user?.let {
+                val action = LogInFragmentDirections.actionLoginFragmentToViewPagerFragment(user)
+                findNavController().navigate(action)
+            }
+        }
     }
 
     override fun onDestroyView() {
