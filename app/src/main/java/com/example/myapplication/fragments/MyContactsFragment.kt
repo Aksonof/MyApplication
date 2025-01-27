@@ -6,30 +6,31 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
-import com.example.myapplication.App
 import com.example.myapplication.R
 import com.example.myapplication.adapter.ContactActionListener
 import com.example.myapplication.adapter.ContactsAdapter
 import com.example.myapplication.databinding.FragmentMyContactsBinding
-import com.example.myapplication.model.Contact
+import com.example.myapplication.model.User
 import com.example.myapplication.setVisibility
-import com.example.myapplication.viewModel.ContactsViewModel
-import com.example.myapplication.viewModel.ContactsViewModelFactory
+import com.example.myapplication.viewModel.UserViewModel
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
 private const val DEFAULT_MARGIN = 50
 private const val MULTISELECT_MODE_MARGIN = 137
 
+@AndroidEntryPoint
 class MyContactsFragment : Fragment() {
 
     private var _binding: FragmentMyContactsBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: ContactsAdapter
-    private lateinit var viewModel: ContactsViewModel
+    private val userViewModel: UserViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,18 +43,17 @@ class MyContactsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val contactsViewModelFactory = ContactsViewModelFactory(requireContext().applicationContext as App)
-        viewModel = ViewModelProvider(this, contactsViewModelFactory)[ContactsViewModel::class.java]
 
         setupRecyclerView()
+
         setupObservers()
+
         setupListeners()
-        setupDialogFragmentListener()
     }
 
     private fun setupListeners() {
         binding.addContactTextView.setOnClickListener {
-            showAddUserDialog()
+            findNavController().navigate(R.id.action_viewPagerFragment_to_addContactsFragment)
         }
         binding.arrowBackImageView.setOnClickListener {
             val viewPager = activity?.findViewById<ViewPager2>(R.id.pager)
@@ -62,7 +62,7 @@ class MyContactsFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.usersLiveData.observe(viewLifecycleOwner) {
+        userViewModel.addedContacts.observe(viewLifecycleOwner) {
             adapter.submitList(it.toMutableList())
         }
     }
@@ -70,42 +70,42 @@ class MyContactsFragment : Fragment() {
     private fun setupRecyclerView() {
         adapter = ContactsAdapter(object : ContactActionListener {
 
-            override fun onDeleteUser(contact: Contact) {
-                val listBeforeDeletedContact = viewModel.usersLiveData.value
-                viewModel.deleteUser(contact)
-                showRestoreUserMessage(listBeforeDeletedContact)
+            override fun onDeleteUser(contact: User) {
+                val listBeforeDeletedContact = userViewModel.addedContacts.value
+                userViewModel.deleteContact(contact)
+//                showRestoreUserMessage(listBeforeDeletedContact)
             }
 
-            override fun onUserDetails(contact: Contact) {
+            override fun onUserDetails(contact: User) {
                 val action =
                     ViewPagerFragmentDirections.actionViewPagerFragmentToContactsProfileFragment(
-                        contact.photo,
-                        contact.name,
-                        contact.career
+                        contact.imageUrl.toString(),
+                        contact.name.toString(),
+                        contact.career.toString()
                     )
                 findNavController().navigate(action)
             }
 
-            override fun onSelectUser(contact: Contact) {
-                viewModel.selectUser(contact)
-
-                if (!viewModel.isAnyContactSelect()) {
-                    adapter.changeModeStatus(false)
-                    updateRecyclerViewMargin(DEFAULT_MARGIN)
-                    binding.deleteUsersImageView.setVisibility(false)
-                }
+            override fun onSelectUser(contact: User) {
+//                viewModel.selectUser(contact)
+//
+//                if (!viewModel.isAnyContactSelect()) {
+//                    adapter.changeModeStatus(false)
+//                    updateRecyclerViewMargin(DEFAULT_MARGIN)
+//                    binding.deleteUsersImageView.setVisibility(false)
+//                }
             }
 
             override fun onMultiSelectModeActive() {
-                updateRecyclerViewMargin(MULTISELECT_MODE_MARGIN)
-                binding.deleteUsersImageView.setVisibility(true)
-
-                binding.deleteUsersImageView.setOnClickListener {
-                    adapter.changeModeStatus(false)
-                    viewModel.deleteSelectedContacts()
-                    updateRecyclerViewMargin(DEFAULT_MARGIN)
-                    binding.deleteUsersImageView.setVisibility(false)
-                }
+//                updateRecyclerViewMargin(MULTISELECT_MODE_MARGIN)
+//                binding.deleteUsersImageView.setVisibility(true)
+//
+//                binding.deleteUsersImageView.setOnClickListener {
+//                    adapter.changeModeStatus(false)
+//                    viewModel.deleteSelectedContacts()
+//                    updateRecyclerViewMargin(DEFAULT_MARGIN)
+//                    binding.deleteUsersImageView.setVisibility(false)
+//                }
             }
         })
 
@@ -123,40 +123,26 @@ class MyContactsFragment : Fragment() {
         binding.recyclerView.layoutParams = layoutParams
     }
 
-    private fun showRestoreUserMessage(listBeforeDeletedContact: List<Contact>?) {
-        Snackbar.make(
-            requireView(),
-            getString(R.string.contact_has_been_removed),
-            Snackbar.LENGTH_LONG
-        ).setAction(
-            getString(R.string.cancel)
-        ) {
-            viewModel.restoreUser(listBeforeDeletedContact)
-        }
-            .setActionTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.my_light_primary
-                )
-            )
-            .show()
-    }
+//    private fun showRestoreUserMessage(listBeforeDeletedContact: List<User>?) {
+//        Snackbar.make(
+//            requireView(),
+//            getString(R.string.contact_has_been_removed),
+//            Snackbar.LENGTH_LONG
+//        ).setAction(
+//            getString(R.string.cancel)
+//        ) {
+//            viewModel.restoreUser(listBeforeDeletedContact)
+//        }
+//            .setActionTextColor(
+//                ContextCompat.getColor(
+//                    requireContext(),
+//                    R.color.my_light_primary
+//                )
+//            )
+//            .show()
+//    }
 
-    private fun setupDialogFragmentListener() {
-        AddUserDialogFragment.setDialogResultListener(
-            childFragmentManager,
-            viewLifecycleOwner
-        ) { name, career ->
-            viewModel.addUser(
-                name, career
-            )
-            binding.recyclerView.smoothScrollToPosition(0)
-        }
-    }
 
-    private fun showAddUserDialog() {
-        AddUserDialogFragment.show(childFragmentManager, AddUserDialogFragment.TAG)
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

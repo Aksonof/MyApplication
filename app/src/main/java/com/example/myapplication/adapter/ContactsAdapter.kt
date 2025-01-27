@@ -9,14 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.databinding.ItemContactMultiselectBinding
 import com.example.myapplication.databinding.ItemContactNormalBinding
 import com.example.myapplication.loadImage
-import com.example.myapplication.model.Contact
+import com.example.myapplication.model.User
 
 
 private const val VIEW_TYPE_NORMAL = 0
 private const val VIEW_TYPE_MULTISELECT = 1
 
 class ContactsAdapter(private val actionListener: ContactActionListener) :
-    ListAdapter<Contact, RecyclerView.ViewHolder>(MyItemCallback()) {
+    ListAdapter<User, RecyclerView.ViewHolder>(MyItemCallback()) {
 
     private var isModeActive: Boolean = false
 
@@ -46,10 +46,10 @@ class ContactsAdapter(private val actionListener: ContactActionListener) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val user = getItem(position)
+        val contact = getItem(position)
         when (holder) {
-            is NormalViewHolder -> holder.onBind(user)
-            is MultiSelectViewHolder -> holder.onBind(user)
+            is NormalViewHolder -> holder.onBind(contact)
+            is MultiSelectViewHolder -> holder.onBind(contact)
         }
     }
 
@@ -57,7 +57,7 @@ class ContactsAdapter(private val actionListener: ContactActionListener) :
         private val binding: ItemContactNormalBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(item: Contact) {
+        fun onBind(item: User) {
             with(binding) {
                 userNameView.text = item.name
                 userCareerView.text = item.career
@@ -75,7 +75,7 @@ class ContactsAdapter(private val actionListener: ContactActionListener) :
                     actionListener.onDeleteUser(item)
                 }
             }
-            loadImage(binding.userPhotoView, item.photo)
+            loadImage(binding.userPhotoView, item.imageUrl)
         }
     }
 
@@ -83,11 +83,11 @@ class ContactsAdapter(private val actionListener: ContactActionListener) :
         private val binding: ItemContactMultiselectBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(item: Contact) {
+        fun onBind(item: User) {
             with(binding) {
                 userNameView.text = item.name
                 userCareerView.text = item.career
-                checkBox.isChecked = item.isSelected
+                checkBox.isChecked = item.isSelected == true
 
                 itemView.setOnClickListener {
                     actionListener.onSelectUser(item)
@@ -96,17 +96,17 @@ class ContactsAdapter(private val actionListener: ContactActionListener) :
                     actionListener.onSelectUser(item)
                 }
             }
-            loadImage(binding.userPhotoView, item.photo)
+            loadImage(binding.userPhotoView, item.imageUrl)
         }
     }
 
 
-    class MyItemCallback : DiffUtil.ItemCallback<Contact>() {
-        override fun areItemsTheSame(oldItem: Contact, newItem: Contact): Boolean {
+    class MyItemCallback : DiffUtil.ItemCallback<User>() {
+        override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Contact, newItem: Contact): Boolean {
+        override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
             return oldItem == newItem
         }
     }

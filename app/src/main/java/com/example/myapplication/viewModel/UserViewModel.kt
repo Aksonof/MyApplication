@@ -1,5 +1,6 @@
 package com.example.myapplication.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -33,8 +34,20 @@ class UserViewModel @Inject constructor(
     private val _allContactsLiveData = MutableLiveData<List<User>>()
     val allContactsLiveData: LiveData<List<User>> = _allContactsLiveData
 
-    private val _addedContacts = MutableLiveData<List<User>>()
-    val addedContacts: MutableLiveData<List<User>> = _addedContacts
+    private val _addedContacts = MutableLiveData<List<User>>(emptyList())
+    val addedContacts: LiveData<List<User>> = _addedContacts
+
+    fun cutContacts() {
+        val currentContacts = _allContactsLiveData.value
+
+        if (currentContacts != null) {
+            val limitedContacts = currentContacts.take(50)
+            _allContactsLiveData.value = limitedContacts
+        } else {
+
+            Log.d("UserViewModel", "We have null")
+        }
+    }
 
     fun loginUser(
         email: String,
@@ -96,8 +109,15 @@ class UserViewModel @Inject constructor(
             registerResponse?.let {
                 _registerState.value = Result.success(it)
                 _user.value = it.data.user
-
                 sessionManager.saveTokens(it.data.accessToken, it.data.refreshToken)
+                val token = sessionManager.getAccessToken().toString()
+
+                getAddedContacts(
+                    "Bearer $token",
+                    it.data.user.id.toString()
+                )
+                getAllContacts("Bearer $token")
+
             } ?: run {
                 _registerState.value = Result.failure(Exception("Response body is null"))
             }
@@ -112,22 +132,54 @@ class UserViewModel @Inject constructor(
     }
 
 
-    fun getAllContacts(authHeader: String) = viewModelScope.launch {
+    private fun getAllContacts(authHeader: String) = viewModelScope.launch {
         val response = userRepository.getAllUsers(authHeader)
         if (response.isSuccessful) {
-            _allContactsLiveData.value = response.body()?.data
+            _allContactsLiveData.value = (response.body()?.data?.users)
+            Log.d("Sieee", "Size ${_allContactsLiveData.value?.size}")
+        }
+        Log.d(
+            "AAArrr", "is Successful?: ${response.isSuccessful}" +
+                    "Status: ${response.body()?.status}" +
+                    "User: ${response.body()?.data?.users?.size}"
+        )
+    }
+
+    private fun getAddedContacts(authHeader: String, userId: String) = viewModelScope.launch {
+        val response = userRepository.getUserContacts(authHeader, userId)
+        if (response.isSuccessful) {
+            _addedContacts.value = response.body()?.data?.users
         }
     }
 
-    fun getAddedContacts(authHeader: String, userId: String) = viewModelScope.launch {
-        val response = userRepository.getUserContacts(authHeader, userId)
+    fun deleteContact(contact: User) = viewModelScope.launch {
+        val response = userRepository.deleteContact(
+            "Bearer ${sessionManager.getAccessToken()}",
+            user.value?.id.toString(),
+            contact.id.toString()
+        )
         if (response.isSuccessful) {
-            _addedContacts.value = response.body()?.data
+            getAddedContacts(
+                "Bearer ${sessionManager.getAccessToken()}",
+                user.value?.id.toString()
+            )
+        }
+    }
+
+    fun addContact(contact: User) = viewModelScope.launch {
+        val response = userRepository.addContact(
+            "Bearer ${sessionManager.getAccessToken()}",
+            user.value?.id.toString(), contact.id
+        )
+        if (response.isSuccessful) {
+            getAddedContacts(
+                "Bearer ${sessionManager.getAccessToken()}",
+                user.value?.id.toString()
+            )
         }
     }
 
     fun isContactAdded(contact: User): Boolean {
         return _addedContacts.value?.any { it.email == contact.email } == true
     }
-
 }

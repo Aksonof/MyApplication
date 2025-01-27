@@ -1,7 +1,9 @@
 package com.example.myapplication.model
 
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Response
 
 class UserRepository(private val apiService: ApiService) {
@@ -33,15 +35,33 @@ class UserRepository(private val apiService: ApiService) {
         return apiService.loginUser(email, password)
     }
 
-    suspend fun getAllUsers(authHeader: String): Response<ApiResponse<List<User>>> {
+    suspend fun getAllUsers(authHeader: String): Response<ApiResponse<ContactsResponse>> {
         return apiService.getAllUsers(authHeader)
     }
 
     suspend fun getUserContacts(
         authHeader: String,
         userId: String
-    ): Response<ApiResponse<List<User>>> {
+    ): Response<ApiResponse<ContactsResponse>> {
         return apiService.getUserContacts(authHeader, userId)
+    }
+
+    suspend fun addContact(
+        authHeader: String,
+        userId: String,
+        contactId: Int
+    ): Response<ApiResponse<ContactsResponse>> {
+        val body = """{"contactId": $contactId}"""
+            .toRequestBody("application/json".toMediaTypeOrNull())
+        return apiService.addContact(authHeader, userId, body)
+    }
+
+    suspend fun deleteContact(
+        authHeader: String,
+        userId: String,
+        contactId: String
+    ): Response<ApiResponse<ContactsResponse>> {
+        return apiService.deleteContact(authHeader, userId, contactId)
     }
 
 }

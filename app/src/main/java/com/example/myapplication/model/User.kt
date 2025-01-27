@@ -16,7 +16,8 @@ data class User(
     val instagram: String?,
     val twitter: String?,
     val linkedin: String?,
-    val imageUrl: String?
+    val imageUrl: String?,
+    var isSelected: Boolean?
 ) : Parcelable
 
 data class RegisterResponse(
@@ -34,5 +35,10 @@ data class UserData(
 data class ApiResponse<T>(
     val status: String,
     val code: Int,
+    val message: String?,
     val data: T
+)
+
+data class ContactsResponse(
+    val users: List<User>
 )

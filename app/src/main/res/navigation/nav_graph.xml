@@ -19,6 +19,13 @@
         <argument
             android:name="user"
             app:argType="com.example.myapplication.model.User" />
+        <action
+            android:id="@+id/action_viewPagerFragment_to_addContactsFragment"
+            app:destination="@id/addContactsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
 
     <fragment
@@ -35,6 +42,8 @@
         <argument
             android:name="userPhoto"
             app:argType="string" />
+
+
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -86,5 +95,9 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
     </fragment>
+    <fragment
+        android:id="@+id/addContactsFragment"
+        android:name="com.example.myapplication.fragments.AddContactsFragment"
+        android:label="AddContactsFragment" />
 
 </navigation>

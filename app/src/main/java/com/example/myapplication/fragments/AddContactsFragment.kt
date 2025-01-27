@@ -2,11 +2,12 @@ package com.example.myapplication.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.adapter.AddContactsAdapter
 import com.example.myapplication.databinding.FragmentAddContactsBinding
@@ -16,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class AddContactsFragment : Fragment() {
 
-    private val userViewModel: UserViewModel by viewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
     private var _binding: FragmentAddContactsBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: AddContactsAdapter
@@ -40,11 +41,16 @@ class AddContactsFragment : Fragment() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun setupObservers() {
+
+
+        userViewModel.cutContacts()
         userViewModel.allContactsLiveData.observe(viewLifecycleOwner) { contacts ->
-            adapter.submitList(contacts.toMutableList())
+            adapter.submitList(contacts)
+            Log.d("qwe123", "Size ${contacts.size}  ${contacts[130]}")
         }
 
         userViewModel.addedContacts.observe(viewLifecycleOwner) {
+
             adapter.notifyDataSetChanged()
         }
     }
@@ -56,7 +62,7 @@ class AddContactsFragment : Fragment() {
 
             },
             onAddContactClick = { contact ->
-
+                userViewModel.addContact(contact)
             },
             isContactAdded = { contact -> userViewModel.isContactAdded(contact) }
         )
@@ -64,6 +70,7 @@ class AddContactsFragment : Fragment() {
         val layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter
+
     }
 
     override fun onDestroyView() {

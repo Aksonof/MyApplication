@@ -1,5 +1,6 @@
 package com.example.myapplication.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,20 +27,21 @@ class AddContactsAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val contact = getItem(position)
         val isAdded = isContactAdded(contact)
-
+        Log.d("Pij", "Binding item at position $position: ${contact.email}")
         holder.itemView.setOnClickListener {
             onDetailContactClick(contact)
         }
-        (holder as ContactViewHolder).bind(contact, isAdded)
+
+        (holder as ContactViewHolder).onBind(contact, isAdded)
     }
 
     inner class ContactViewHolder(
         private val binding: ItemAddContactBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: User, isAdded: Boolean) {
+        fun onBind(item: User, isAdded: Boolean) {
             with(binding) {
-                userNameView.text = item.name
+                userNameView.text = item.email
                 userCareerView.text = item.career
                 loadImage(userPhotoView, item.imageUrl)
 
@@ -51,7 +53,6 @@ class AddContactsAdapter(
                     addContactView.setVisibility(View.VISIBLE)
                     addContactTextView.visibility = View.VISIBLE
                     checked.setVisibility(View.GONE)
-
                     addContactView.setOnClickListener { onAddContactClick(item) }
                 }
             }
@@ -61,7 +62,7 @@ class AddContactsAdapter(
 
     class MyItemCallback : DiffUtil.ItemCallback<User>() {
         override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
-            return oldItem.email == newItem.email
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {

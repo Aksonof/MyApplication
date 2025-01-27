@@ -9,8 +9,10 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -18,12 +20,27 @@ import javax.inject.Singleton
 object NetworkModule {
 
     private const val BASE_URL = "http://178.63.9.114:7777/api/"
+    private const val CONNECT_TIMEOUT = 60L // Таймаут на підключення в секундах
+    private const val READ_TIMEOUT = 60L // Таймаут на читання в секундах
+    private const val WRITE_TIMEOUT = 60L // Таймаут на запис в секундах
+
 
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit {
+    fun provideOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
+            .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
+            .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .client(okHttpClient) // Використовуємо налаштований OkHttp клієнт
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
