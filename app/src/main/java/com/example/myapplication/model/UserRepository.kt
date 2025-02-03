@@ -35,22 +35,22 @@ class UserRepository(private val apiService: ApiService) {
         return apiService.loginUser(email, password)
     }
 
-    suspend fun getAllUsers(authHeader: String): Response<ApiResponse<ContactsResponse>> {
+    suspend fun getAllUsers(authHeader: String): Response<ApiResponse<UsersResponse>> {
         return apiService.getAllUsers(authHeader)
     }
 
     suspend fun getUserContacts(
         authHeader: String,
-        userId: String
+        userId: Int
     ): Response<ApiResponse<ContactsResponse>> {
         return apiService.getUserContacts(authHeader, userId)
     }
 
     suspend fun addContact(
         authHeader: String,
-        userId: String,
+        userId: Int,
         contactId: Int
-    ): Response<ApiResponse<ContactsResponse>> {
+    ): Response<ApiResponse<UsersResponse>> {
         val body = """{"contactId": $contactId}"""
             .toRequestBody("application/json".toMediaTypeOrNull())
         return apiService.addContact(authHeader, userId, body)
@@ -60,7 +60,7 @@ class UserRepository(private val apiService: ApiService) {
         authHeader: String,
         userId: String,
         contactId: String
-    ): Response<ApiResponse<ContactsResponse>> {
+    ): Response<ApiResponse<UsersResponse>> {
         return apiService.deleteContact(authHeader, userId, contactId)
     }
 

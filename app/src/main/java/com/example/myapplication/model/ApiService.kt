@@ -41,25 +41,25 @@ interface ApiService {
     @GET("users")
     suspend fun getAllUsers(
         @Header("Authorization") authHeader: String
-    ): Response<ApiResponse<ContactsResponse>>
+    ): Response<ApiResponse<UsersResponse>>
 
     @GET("users/{userId}/contacts")
     suspend fun getUserContacts(
         @Header("Authorization") authHeader: String,
-        @Path("userId") userId: String
+        @Path("userId") userId: Int
     ): Response<ApiResponse<ContactsResponse>>
 
     @PUT("users/{userId}/contacts")
     suspend fun addContact(
         @Header("Authorization") authHeader: String,
-        @Path("userId") userId: String,
+        @Path("userId") userId: Int,
         @Body body: RequestBody
-    ): Response<ApiResponse<ContactsResponse>>
+    ): Response<ApiResponse<UsersResponse>>
 
     @DELETE("users/{userId}/contacts/{contactId}")
     suspend fun deleteContact(
         @Header("Authorization") authHeader: String,
         @Path("userId") userId: String,
         @Path("contactId") contactId: String
-    ): Response<ApiResponse<ContactsResponse>>
+    ): Response<ApiResponse<UsersResponse>>
 }

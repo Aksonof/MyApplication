@@ -39,6 +39,11 @@ data class ApiResponse<T>(
     val data: T
 )
 
-data class ContactsResponse(
+data class UsersResponse(
     val users: List<User>
 )
+
+data class ContactsResponse(
+    val contacts: List<User>
+)
+

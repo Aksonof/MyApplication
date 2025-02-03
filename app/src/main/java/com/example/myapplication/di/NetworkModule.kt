@@ -20,15 +20,16 @@ import javax.inject.Singleton
 object NetworkModule {
 
     private const val BASE_URL = "http://178.63.9.114:7777/api/"
-    private const val CONNECT_TIMEOUT = 60L // Таймаут на підключення в секундах
-    private const val READ_TIMEOUT = 60L // Таймаут на читання в секундах
-    private const val WRITE_TIMEOUT = 60L // Таймаут на запис в секундах
+    private const val CONNECT_TIMEOUT = 60L
+    private const val READ_TIMEOUT = 60L
+    private const val WRITE_TIMEOUT = 60L
 
 
     @Provides
     @Singleton
     fun provideOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
+            .addInterceptor(JsonFixInterceptor())
             .connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
             .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
             .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
@@ -40,10 +41,11 @@ object NetworkModule {
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .client(okHttpClient) // Використовуємо налаштований OkHttp клієнт
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
+
 
     @Provides
     @Singleton

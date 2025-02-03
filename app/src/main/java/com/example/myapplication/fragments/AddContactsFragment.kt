@@ -42,11 +42,8 @@ class AddContactsFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     private fun setupObservers() {
 
-
-        userViewModel.cutContacts()
         userViewModel.allContactsLiveData.observe(viewLifecycleOwner) { contacts ->
             adapter.submitList(contacts)
-            Log.d("qwe123", "Size ${contacts.size}  ${contacts[130]}")
         }
 
         userViewModel.addedContacts.observe(viewLifecycleOwner) {
