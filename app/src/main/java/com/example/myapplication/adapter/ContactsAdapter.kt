@@ -59,7 +59,7 @@ class ContactsAdapter(private val actionListener: ContactActionListener) :
 
         fun onBind(item: User) {
             with(binding) {
-                userNameView.text = item.name
+                userNameView.text = item.email
                 userCareerView.text = item.career
 
                 itemView.setOnLongClickListener {
@@ -85,7 +85,7 @@ class ContactsAdapter(private val actionListener: ContactActionListener) :
 
         fun onBind(item: User) {
             with(binding) {
-                userNameView.text = item.name
+                userNameView.text = item.email
                 userCareerView.text = item.career
                 checkBox.isChecked = item.isSelected == true
 
@@ -99,7 +99,6 @@ class ContactsAdapter(private val actionListener: ContactActionListener) :
             loadImage(binding.userPhotoView, item.imageUrl)
         }
     }
-
 
     class MyItemCallback : DiffUtil.ItemCallback<User>() {
         override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {

@@ -1,13 +1,13 @@
 package com.example.myapplication.fragments
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
@@ -16,9 +16,7 @@ import com.example.myapplication.adapter.ContactActionListener
 import com.example.myapplication.adapter.ContactsAdapter
 import com.example.myapplication.databinding.FragmentMyContactsBinding
 import com.example.myapplication.model.User
-import com.example.myapplication.setVisibility
 import com.example.myapplication.viewModel.UserViewModel
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 private const val DEFAULT_MARGIN = 50
@@ -59,6 +57,41 @@ class MyContactsFragment : Fragment() {
             val viewPager = activity?.findViewById<ViewPager2>(R.id.pager)
             viewPager?.setCurrentItem(MY_PROFILE, true)
         }
+
+        binding.search.setOnClickListener {
+            with(binding) {
+                search.visibility = View.GONE
+                contacts.visibility = View.GONE
+                arrowBackImageView.visibility = View.GONE
+                searchEditText.visibility = View.VISIBLE
+                close.visibility = View.VISIBLE
+                userViewModel.getListForSearch()
+            }
+        }
+
+        binding.close.setOnClickListener {
+            userViewModel.clearListForSearch()
+
+            with(binding) {
+                search.visibility = View.VISIBLE
+                contacts.visibility = View.VISIBLE
+                arrowBackImageView.visibility = View.VISIBLE
+                searchEditText.visibility = View.GONE
+                close.visibility = View.GONE
+            }
+        }
+
+        binding.searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                userViewModel.filterContacts(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+        })
     }
 
     private fun setupObservers() {

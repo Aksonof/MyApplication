@@ -36,6 +36,8 @@ class UserViewModel @Inject constructor(
     private val _addedContacts = MutableLiveData<List<User>>(emptyList())
     val addedContacts: LiveData<List<User>> = _addedContacts
 
+    private var listForSearch: List<User> = emptyList()
+
     fun loginUser(
         email: String,
         password: String
@@ -168,4 +170,29 @@ class UserViewModel @Inject constructor(
     fun isContactAdded(contact: User): Boolean {
         return _addedContacts.value?.any { it.email == contact.email } == true
     }
+
+
+    fun getListForSearch() {
+        listForSearch = _addedContacts.value ?: emptyList()
+    }
+
+    fun clearListForSearch() {
+        val token = sessionManager.getAccessToken().toString()
+        user.value?.let {
+            getAddedContacts("Bearer $token", it.id)
+        }
+        listForSearch = emptyList()
+    }
+
+    fun filterContacts(query: String) {
+
+        _addedContacts.value = if (query.isBlank()) {
+            listForSearch
+        } else {
+            listForSearch.filter {
+                it.email.contains(query, ignoreCase = true)
+            }
+        }
+    }
+
 }
